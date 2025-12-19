@@ -1,0 +1,6 @@
+[
+  {
+    "input": "Simple UML test.",
+    "output": "@startuml\nclass Test\n@enduml"
+  }
+]

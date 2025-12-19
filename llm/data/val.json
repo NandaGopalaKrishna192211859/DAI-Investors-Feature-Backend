@@ -1,0 +1,6 @@
+[
+  {
+    "input": "Validation UML.",
+    "output": "@startuml\nclass Val\n@enduml"
+  }
+]
