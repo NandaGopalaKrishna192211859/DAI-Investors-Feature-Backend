@@ -13,17 +13,40 @@ TASK 1 — CREATE DRAFT
 ======================================================= */
 export async function createDraftProject(req, res) {
   try {
-    const { q1, q2, q3, q4, q5, category_id } = req.body;
+    const {
+      pid,
+      q1 = null,
+      q2 = null,
+      q3 = null,
+      q4 = null,
+      q5 = null,
+      category_id = null
+    } = req.body;
+
     const uid = req.user.uid;
 
-    if (!q1 || !q2 || !q3 || !q4 || !q5 || !category_id) {
-      return res.status(400).json({ error: "Missing required fields." });
+    /* =================================================
+       CASE 1 — UPDATE EXISTING DRAFT (pid present)
+    ================================================= */
+    if (pid) {
+      await db.query(
+        `UPDATE projects 
+         SET q1 = ?, q2 = ?, q3 = ?, q4 = ?, q5 = ?, category_id = ?
+         WHERE pid = ? AND uid = ? AND status = 0`,
+        [q1, q2, q3, q4, q5, category_id, pid, uid]
+      );
+
+      return res.json({
+        message: "Draft updated successfully.",
+        pid
+      });
     }
 
-    /* -----------------------------------------
-       STEP 1 — Count existing drafts for user
-       (status = 0 means draft)
-    ----------------------------------------- */
+    /* =================================================
+       CASE 2 — CREATE NEW DRAFT (pid absent)
+    ================================================= */
+
+    // Count existing drafts for title
     const [countRows] = await db.query(
       "SELECT COUNT(*) AS total FROM projects WHERE uid = ? AND status = 0",
       [uid]
@@ -32,113 +55,159 @@ export async function createDraftProject(req, res) {
     const nextNumber = countRows[0].total + 1;
     const autoTitle = `draft${nextNumber}`;
 
-    /* -----------------------------------------
-       STEP 2 — Insert draft project
-    ----------------------------------------- */
     const [rows] = await db.query(
-      `INSERT INTO projects 
+      `INSERT INTO projects
         (uid, project_title, q1, q2, q3, q4, q5, category_id, status)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0)`,
       [uid, autoTitle, q1, q2, q3, q4, q5, category_id]
     );
 
     return res.json({
-      message: "Draft project created successfully.",
+      message: "Draft created successfully.",
       pid: rows.insertId,
-      title: autoTitle,
+      title: autoTitle
     });
+
   } catch (err) {
-    console.error("CREATE DRAFT ERROR >>>", err);
-    return res.status(500).json({ error: "Failed to create draft project." });
+    console.error("CREATE / UPDATE DRAFT ERROR >>>", err);
+    return res.status(500).json({ error: "Failed to create/update draft." });
   }
 }
 
 
+// /* =======================================================
+// TASK 2 — SAVE CATEGORY ANSWERS (Q7–Q17)
+// ======================================================= */
 /* =======================================================
 TASK 2 — SAVE CATEGORY ANSWERS (Q7–Q17)
 ======================================================= */
 export async function saveCategoryAnswers(req, res) {
   try {
+    // ✅ pid MUST come from route param
     const { pid } = req.params;
+
+    if (!pid) {
+      return res.status(400).json({ error: "pid is required in URL" });
+    }
+
     const answers = req.body;
-    
+
     let updateArr = [];
     let values = [];
-    
+
+    // ✅ Only allow q7–q17 to be updated
     Object.keys(answers).forEach((key) => {
-      updateArr.push(`${key} = ?`);
-      values.push(answers[key]);
+      if (/^q(7|8|9|1[0-7])$/.test(key)) {
+        updateArr.push(`${key} = ?`);
+        values.push(answers[key]);
+      }
     });
-    
+
+    if (updateArr.length === 0) {
+      return res.status(400).json({
+        error: "No valid category answers (q7–q17) provided",
+      });
+    }
+
     values.push(pid);
-    
-    await db.query(
+
+    const [result] = await db.query(
       `UPDATE projects SET ${updateArr.join(", ")} WHERE pid = ?`,
       values
     );
-    
-    res.json({ message: "Category answers saved." });
+
+    // ✅ Explicitly check if row was updated
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        error: "Project not found or no rows updated",
+      });
+    }
+
+    res.json({
+      message: "Category answers (Q7–Q17) saved successfully",
+      updatedFields: updateArr.map((q) => q.split(" ")[0]),
+    });
+
   } catch (err) {
     console.error("CATEGORY SAVE ERROR >>>", err);
     res.status(500).json({ error: "Failed to save category answers." });
   }
 }
 
+
+
+// /* =======================================================
+// TASK 3 — SAVE EXTRA FEATURES (Q18) + FULL INPUT
+// ======================================================= */
 /* =======================================================
 TASK 3 — SAVE EXTRA FEATURES (Q18) + FULL INPUT
 ======================================================= */
 export async function saveExtraFeatures(req, res) {
   try {
+    // ✅ pid comes from URL
     const { pid } = req.params;
     const { q18 } = req.body;
-    
-    // fetch project
-    const [rows] = await db.query("SELECT * FROM projects WHERE pid = ?", [
-      pid,
-    ]);
-    
-    if (rows.length === 0)
-      return res.status(404).json({ error: "Project not found" });
-    
-    const p = rows[0];
-    
-    // build full input
-    const fullInput = `
-    Q1: ${p.q1}
-    Q2: ${p.q2}
-    Q3: ${p.q3}
-    Q4: ${p.q4}
-    Q5: ${p.q5}
-    
-    Q7: ${p.q7}
-    Q8: ${p.q8}
-    Q9: ${p.q9}
-    Q10: ${p.q10}
-    Q11: ${p.q11}
-    Q12: ${p.q12}
-    Q13: ${p.q13}
-    Q14: ${p.q14}
-    Q15: ${p.q15}
-    Q16: ${p.q16}
-    Q17: ${p.q17}
-    
-    Q18: ${q18}
-    `.trim();
-    
-    await db.query(
-      `UPDATE projects SET q18=?, full_input=? WHERE pid=?`,
-      [q18, fullInput, pid]
+
+    if (!pid) {
+      return res.status(400).json({ error: "pid is required in URL" });
+    }
+
+    const [rows] = await db.query(
+      "SELECT * FROM projects WHERE pid = ?",
+      [pid]
     );
-    
+
+    if (rows.length === 0) {
+      return res.status(404).json({ error: "Project not found" });
+    }
+
+    const p = rows[0];
+
+    const fullInput = `
+${p.q1}
+${p.q2}
+${p.q3}
+${p.q4}
+${p.q5}
+
+${p.q7}
+${p.q8}
+${p.q9}
+${p.q10}
+${p.q11}
+${p.q12}
+${p.q13}
+${p.q14}
+${p.q15}
+${p.q16}
+${p.q17}
+
+${q18 || ""}
+`.trim();
+
+    const [result] = await db.query(
+      `UPDATE projects SET q18 = ?, full_input = ? WHERE pid = ?`,
+      [q18 || "", fullInput, pid]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: "Update failed" });
+    }
+
     res.json({
-      message: "Extra features + full input saved.",
+      message: "Extra feature (Q18) + full input saved",
       fullInput,
     });
+
   } catch (err) {
     console.error("FEATURES ERROR >>>", err);
     res.status(500).json({ error: "Failed to save extra features." });
   }
 }
+
+
+
+
 
 /* =======================================================
 TASK 4 — LLD GENERATION (Summary → UML)
@@ -344,15 +413,27 @@ export async function getDraftProjects(req, res) {
 ======================================================= */
 export async function getSavedProjects(req, res) {
   try {
+    console.log("STEP1 TOKEN UID >>>", req.user.uid);
+
+
     const uid = req.user.uid;
 
-    const [rows] = await db.query(
-      `SELECT pid, full_input, image_path, explanation, modification_version, created_at, updated_at
-       FROM projects 
-       WHERE uid = ? AND status = 1
-       ORDER BY updated_at DESC`,
+  const [rows] = await db.query(
+      `
+      SELECT 
+        pid,
+        project_title,
+        CONCAT('/diagrams/', SUBSTRING_INDEX(image_path, '/', -1)) AS image_url,
+        created_at
+      FROM projects
+      WHERE uid = ? AND status = 1
+      ORDER BY updated_at DESC
+      `,
       [uid]
     );
+console.log("SAVED ROWS >>>", rows);
+
+
 
     return res.json({
       status: "saved",

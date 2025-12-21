@@ -72,7 +72,7 @@ Q18: ${project.q18}
 
     // STEP 3 — Summary
     const summaryPrompt = `
-Summarize this startup idea in 8-10 professional sentences.
+Summarize this startup idea in 4-5 professional sentences.
 Make it clear, short, beginner-friendly.
 Focus on users, key features, flows, and goal.
 
