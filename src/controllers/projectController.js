@@ -390,12 +390,22 @@ export async function getDraftProjects(req, res) {
     const uid = req.user.uid;
 
     const [rows] = await db.query(
-      `SELECT pid, q1, category_id, created_at, updated_at 
-       FROM projects 
-       WHERE uid = ? AND status = 0
-       ORDER BY created_at DESC`,
-      [uid]
-    );
+  `
+  SELECT
+    pid,
+    modification_version,
+    COALESCE(project_title, CONCAT('Draft #', pid)) AS project_title,
+    q1,
+    category_id,
+    created_at,
+    updated_at
+  FROM projects
+  WHERE uid = ? AND status = 0
+  ORDER BY created_at DESC
+  `,
+  [uid]
+);
+
 
     return res.json({
       status: "drafts",
@@ -423,7 +433,8 @@ export async function getSavedProjects(req, res) {
       SELECT 
         pid,
         project_title,
-        CONCAT('/diagrams/', SUBSTRING_INDEX(image_path, '/', -1)) AS image_url,
+        modification_version,
+        CONCAT('/diagrams/', SUBSTRING_INDEX(REPLACE(image_path, '\\\\', '/'), '/', -1)) AS image_url,
         created_at
       FROM projects
       WHERE uid = ? AND status = 1

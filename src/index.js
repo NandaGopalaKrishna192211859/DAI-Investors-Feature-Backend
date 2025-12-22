@@ -19,8 +19,16 @@ app.use("/api/investors", investorRoutes);
 
 
 
-// serve pngs
-app.use("/diagrams", express.static("src/storage/diagrams"));
+import path from "path";
+
+const __dirname = path.resolve();
+
+// serve pngs (ABSOLUTE PATH)
+app.use(
+  "/diagrams",
+  express.static(path.join(__dirname, "src/storage/diagrams"))
+);
+
 
 app.use("/uploads", express.static("src/storage"));
 

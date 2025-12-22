@@ -171,6 +171,7 @@ ClassC ..> ClassD
 @enduml
 
 ---
+if their is big stuff happens - remove unnecessary terms and try to keep a neat and clean diagram - don't stress yourself - give me good UML diagram
 Now generate the FINAL PlantUML diagram using your own creative structure but MUST obey all rules above.
 ${lld}
 
@@ -255,6 +256,7 @@ ${project.full_input || ""}
 User Modification Request:
 ${modification_text}
 
+if their is big stuff happens - remove unnecessary terms and try to keep a neat and clean diagram - don't stress yourself - give me good UML diagram
 Return a clean summary only.
 `;
     const updatedSummary = await callGroq(summaryPrompt);
