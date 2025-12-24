@@ -1,5 +1,7 @@
 console.log("🔥 projectRoutes loaded from:", import.meta.url);
-
+import { getMyConnectors } from "../controllers/investorController.js";
+import { createProjectPackage } from "../controllers/projectController3.js";
+import { getProjectPackage } from "../controllers/projectPackageController.js";
 import express from "express";
 import { authenticate } from "../middlewares/authMiddleware.js";
 
@@ -87,17 +89,11 @@ router.post("/dgenerate-lld/:pid", authenticate, DgenerateLLDForProject);
 
 // Project package - post and get
 // we will add linkdin option later 
-import { createProjectPackage } from "../controllers/projectController3.js";
 router.post("/package/:pid", authenticate, createProjectPackage);
-
-import { getProjectPackage } from "../controllers/projectPackageController.js";
 router.get("/package/:pid", authenticate, getProjectPackage);
 
 
 
-// send project package
-import { sendProjectPackage, getMyConnectors } from "../controllers/investorController.js";
-router.post("/send-package", authenticate, sendProjectPackage);
 
 router.get("/test-route", (req, res) => res.send("Matched test-route"));
 

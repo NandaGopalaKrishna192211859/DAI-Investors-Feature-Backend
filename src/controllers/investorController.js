@@ -1,4 +1,5 @@
 import db from "../config/db.js";
+console.log("SEND API CALLED");
 
 /**
  * GET /api/investors/category/:categoryName
@@ -11,10 +12,6 @@ export async function getInvestorsByCategory(req, res) {
     if (!categoryName) {
       return res.status(400).json({ error: "Category name is required." });
     }
-
-    // We stored preferred_categories as JSON string, e.g. '["Food & Hospitality","SaaS"]'
-    // So we search for:  %"Food & Hospitality"%
-    const likePattern = `%\"${categoryName}\"%`;
 
     const [rows] = await db.query(
       `
@@ -32,15 +29,14 @@ export async function getInvestorsByCategory(req, res) {
         investment_type,
         min_investment,
         max_investment,
-        preferred_categories,
-        verified_investor
+        preferred_categories
       FROM users
       WHERE is_investor = 1
         AND preferred_categories IS NOT NULL
-        AND preferred_categories LIKE ?
-      ORDER BY verified_investor DESC, name ASC
+        AND LOWER(preferred_categories) LIKE LOWER(CONCAT('%', ?, '%'))
+      ORDER BY name ASC
       `,
-      [likePattern]
+      [categoryName.trim()]
     );
 
     return res.json({
@@ -103,134 +99,92 @@ export async function getAllInvestors(req, res) {
  */
 export async function sendProjectPackage(req, res) {
   try {
-    const founder_uid = req.user.uid; 
-    const { investorIds = [], projectId, isHub = false } = req.body;
+    console.log("SEND PACKAGE HIT >>>", req.body, req.user.uid);
 
-    if (!projectId) {
-      return res.status(400).json({ error: "projectId is required." });
-    }
+    const founder_uid = req.user.uid;
+    const { investorIds = [], projectId } = req.body;
 
-    // Validate: Project belongs to this founder
+    console.log("INVESTOR IDS >>>", investorIds);
+    
     const [projectRows] = await db.query(
       "SELECT * FROM projects WHERE pid = ? AND uid = ?",
       [projectId, founder_uid]
     );
 
     if (projectRows.length === 0) {
-      return res.status(404).json({
-        error: "Project not found or you are not the owner."
-      });
+      return res.status(404).json({ error: "Project not found" });
     }
+
+    const project = projectRows[0];
+    const projectCategoryName = project.category_id; // ✅ already a name
 
     let insertedCount = 0;
     let skipped = [];
 
-    // -----------------------------------------
-    // DIRECT SEND (ONLY to category-matching investors)
-    // -----------------------------------------
-    if (investorIds.length > 0) {
+    for (const investor_uid of investorIds) {
 
-      // Get project category name
-      const [categoryRow] = await db.query(
-        "SELECT category_name FROM categories WHERE id = ?",
-        [projectRows[0].category_id]
+      const [investorRows] = await db.query(
+        "SELECT preferred_categories FROM users WHERE uid = ? AND is_investor = 1",
+        [investor_uid]
       );
 
-      const projectCategoryName = categoryRow[0]?.category_name;
+      if (investorRows.length === 0) {
+        skipped.push({ investor_uid, reason: "Investor not found" });
+        continue;
+      }
 
-      for (const investor_uid of investorIds) {
+      let investorCategories = [];
+      try {
+        investorCategories = JSON.parse(investorRows[0].preferred_categories || "[]");
+      } catch { }
 
-        // Fetch investor categories
-        const [investorRows] = await db.query(
-          "SELECT preferred_categories FROM users WHERE uid = ? AND is_investor = 1",
-          [investor_uid]
-        );
+      // if (!investorCategories.includes(projectCategoryName)) {
+      //   skipped.push({ investor_uid, reason: "Category mismatch" });
+      //   continue;
+      // }
 
-        if (investorRows.length === 0) {
-          skipped.push({ investor_uid, reason: "Investor not found" });
-          continue;
-        }
-
-        let investorCategories = [];
-        try {
-          investorCategories = JSON.parse(investorRows[0].preferred_categories || "[]");
-        } catch {
-          investorCategories = [];
-        }
-
-        // Compare category names
-        const match = investorCategories.includes(projectCategoryName);
-
-        if (!match) {
-          skipped.push({ investor_uid, reason: "Category mismatch" });
-          continue;
-        }
-
-        // INSERT ONLY IF MATCHED
+      // ✅ CORRECT INSERT
+      try {
         await db.query(
           `
-          INSERT INTO investor_requests 
-          (founder_uid, investor_uid, project_id, source_type, status)
-          VALUES (?, ?, ?, 'direct', 'pending')
-          `,
-          [founder_uid, investor_uid, projectId]
+    INSERT INTO project_requests
+    (pid, requestby_uid, responseby_uid, title, category, package, response_status)
+    VALUES (?, ?, ?, ?, ?, ?, 'pending')
+    `,
+          [
+            project.pid,
+            founder_uid,
+            investor_uid,
+            project.project_title,
+            projectCategoryName,
+            project.explanation
+          ]
         );
-
-        insertedCount++;
+        console.log("INSERTED FOR >>>", investor_uid);
+      } catch (e) {
+        console.error("INSERT FAILED >>>", e.sqlMessage);
       }
-    }
 
-    // -----------------------------------------
-    // HUB PUBLISH (ONLY IF isHub = true)
-    // Only one hub entry allowed
-    // -----------------------------------------
-    let hubPublishedStatus = false;
 
-    if (isHub === true) {
+      insertedCount++;
 
-      // Check if hub already exists
-      const [existingHub] = await db.query(
-        `
-        SELECT id FROM investor_requests
-        WHERE founder_uid = ? AND project_id = ? AND source_type = 'hub'
-        `,
-        [founder_uid, projectId]
+      console.log(
+        "MATCH CHECK >>>",
+        projectCategoryName,
+        investorCategories
       );
 
-      if (existingHub.length === 0) {
-        // Insert new hub entry
-        await db.query(
-          `
-          INSERT INTO investor_requests 
-          (founder_uid, investor_uid, project_id, source_type, status)
-          VALUES (?, NULL, ?, 'hub', 'pending')
-          `,
-          [founder_uid, projectId]
-        );
-
-        hubPublishedStatus = true;
-
-      } else {
-        // Already published in hub
-        hubPublishedStatus = true;
-      }
     }
 
-    // -----------------------------------------
-    // FINAL RESPONSE
-    // -----------------------------------------
     return res.json({
       success: true,
-      projectId,
       sent_to_investors: insertedCount,
-      skipped,
-      hub_published: hubPublishedStatus,
-      message: "Send request completed."
+      skipped
     });
 
   } catch (err) {
     console.error("SEND PROJECT PACKAGE ERROR >>>", err);
-    return res.status(500).json({ error: "Failed to send project package." });
+    return res.status(500).json({ error: "Failed to send project package" });
   }
 }
 
@@ -482,7 +436,7 @@ export async function getInvestorProfile(req, res) {
     let categories = [];
     try {
       categories = JSON.parse(rows[0].preferred_categories || "[]");
-    } catch {}
+    } catch { }
 
     return res.json({
       success: true,
@@ -695,7 +649,7 @@ export async function getNotifications(req, res) {
     // Parse meta JSON
     const notifications = rows.map(n => {
       let meta = null;
-      try { meta = JSON.parse(n.meta || "{}"); } catch {}
+      try { meta = JSON.parse(n.meta || "{}"); } catch { }
       return { ...n, meta };
     });
 

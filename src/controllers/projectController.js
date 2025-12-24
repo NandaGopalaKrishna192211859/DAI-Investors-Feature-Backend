@@ -423,8 +423,7 @@ export async function getDraftProjects(req, res) {
 ======================================================= */
 export async function getSavedProjects(req, res) {
   try {
-    console.log("STEP1 TOKEN UID >>>", req.user.uid);
-
+    
 
     const uid = req.user.uid;
 
@@ -433,6 +432,7 @@ export async function getSavedProjects(req, res) {
       SELECT 
         pid,
         project_title,
+        category_id AS category,
         modification_version,
         CONCAT('/diagrams/', SUBSTRING_INDEX(REPLACE(image_path, '\\\\', '/'), '/', -1)) AS image_url,
         created_at
@@ -442,7 +442,6 @@ export async function getSavedProjects(req, res) {
       `,
       [uid]
     );
-console.log("SAVED ROWS >>>", rows);
 
 
 

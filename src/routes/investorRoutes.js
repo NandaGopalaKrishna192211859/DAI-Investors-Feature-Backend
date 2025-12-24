@@ -2,7 +2,8 @@ import express from "express";
 import { authenticate } from "../middlewares/authMiddleware.js";
 import {
   getInvestorsByCategory,
-  getAllInvestors
+  getAllInvestors,
+  sendProjectPackage
 } from "../controllers/investorController.js";
 
 const router = express.Router();
@@ -18,6 +19,9 @@ import { getInvestorInbox, respondToRequest, getInvestorProfile, getHubFeed} fro
 router.get("/inbox", authenticate, getInvestorInbox);
 router.post("/respond", authenticate, respondToRequest);
 router.get("/investor/profile/:uid", authenticate, getInvestorProfile);
+// send project package
+router.post("/send-package", authenticate, sendProjectPackage);
+
 
 router.get("/hub-feed", authenticate, getHubFeed);
 
