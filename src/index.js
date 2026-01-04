@@ -6,8 +6,6 @@ import path from "path";
 import projectRoutes from "./routes/projectRoutes.js";
 import notificationRoutes from "./routes/notificationRoutes.js";
 import investorRoutes from "./routes/investorRoutes.js";
-import projectInvestorRoutes from "./routes/projectInvestorRoutes.js";
-
 
 
 dotenv.config();
@@ -19,9 +17,6 @@ app.use("/api/questions", questionRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/projects", projectRoutes);
 app.use("/api/investors", investorRoutes);
-app.use("/api/project-investor", projectInvestorRoutes);
-
-
 
 
 

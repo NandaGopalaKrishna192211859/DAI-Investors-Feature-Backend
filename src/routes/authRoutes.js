@@ -1,8 +1,8 @@
 import express from "express";
 import { register, login, sendOTP, resetPassword } from "../controllers/authController.js";
 import upload from "../middlewares/uploadProfileImage.js";
-import { uploadProfileImage, getProfile, updateProfile, deleteAccount } from "../controllers/authController.js";
-import { authenticate } from "../middlewares/authMiddleware.js";
+import { uploadProfileImage, getProfile, updateProfile, deleteAccount, getProfile1, updateProfile1 } from "../controllers/authController.js";
+import authMiddleware, { authenticate } from "../middlewares/authMiddleware.js";
 
 
 const router = express.Router();
@@ -20,6 +20,23 @@ router.post("/profile-image", authenticate, upload.single("image"), uploadProfil
 // Step 2: Forgot Password
 router.post("/forgot-password", sendOTP);
 router.post("/reset-password", resetPassword);
+
+
+
+
+
+
+
+router.get("/profile", authMiddleware, getProfile1);
+router.post("/profile/update", authMiddleware, updateProfile1);
+
+
+
+
+
+
+
+
 
 
 // Task - get profile data

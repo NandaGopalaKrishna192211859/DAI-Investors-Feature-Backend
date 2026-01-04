@@ -229,12 +229,59 @@ export async function login(req, res) {
    TASK 10 — UPLOAD & SAVE PROFILE IMAGE
 ========================================================================= */
 
+// old is gold - for uploadingimage
+// export async function uploadProfileImage(req, res) {
+//   try {
+
+//     console.log("HEADERS >>>", req.headers);
+//   console.log("FILE >>>", req.file);
+//   console.log("BODY >>>", req.body);
+//     const uid = req.user.uid;
+
+//     if (!req.file) {
+//       return res.status(400).json({ error: "No image file uploaded." });
+//     }
+
+//     // temp file info
+//     const tempPath = req.file.path;
+//     const ext = path.extname(req.file.originalname);
+
+//     // final file name
+//     const finalFileName = `user_${uid}${ext}`;
+//     const finalPath = path.join("src/storage/profile", finalFileName);
+
+//     // 🔁 Rename file
+//     fs.renameSync(tempPath, finalPath);
+
+//     // DB path
+//     const dbImagePath = `profile/${finalFileName}`;
+
+//     // Update DB
+//     await db.query(
+//       "UPDATE users SET profile_image = ? WHERE uid = ?",
+//       [dbImagePath, uid]
+//     );
+
+//     return res.json({
+//       message: "Profile image uploaded & renamed successfully",
+//       image_url: `/uploads/${dbImagePath}`
+//     });
+
+//   } catch (err) {
+//     console.error("PROFILE IMAGE ERROR >>>", err);
+//     return res.status(500).json({ error: "Failed to upload profile image." });
+//   }
+// }
+
+
+
 export async function uploadProfileImage(req, res) {
   try {
 
     console.log("HEADERS >>>", req.headers);
-  console.log("FILE >>>", req.file);
-  console.log("BODY >>>", req.body);
+    console.log("FILE >>>", req.file);
+    console.log("BODY >>>", req.body);
+
     const uid = req.user.uid;
 
     if (!req.file) {
@@ -249,13 +296,14 @@ export async function uploadProfileImage(req, res) {
     const finalFileName = `user_${uid}${ext}`;
     const finalPath = path.join("src/storage/profile", finalFileName);
 
-    // 🔁 Rename file
-    fs.renameSync(tempPath, finalPath);
+    // 🔁 SAFE FILE MOVE (Windows compatible)
+    fs.copyFileSync(tempPath, finalPath);
+    fs.unlinkSync(tempPath);
 
-    // DB path
+    // DB path (UNCHANGED)
     const dbImagePath = `profile/${finalFileName}`;
 
-    // Update DB
+    // Update DB (UNCHANGED)
     await db.query(
       "UPDATE users SET profile_image = ? WHERE uid = ?",
       [dbImagePath, uid]
@@ -271,6 +319,131 @@ export async function uploadProfileImage(req, res) {
     return res.status(500).json({ error: "Failed to upload profile image." });
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * GET /auth/profile
+ * Load logged-in user's profile
+ */
+export const getProfile1 = async (req, res) => {
+  try {
+    const uid = req.user.uid; // 🔐 from JWT
+
+    const [rows] = await db.query(
+      `SELECT 
+        uid,
+        name,
+        phone,
+        email,
+        company_name,
+        linkedin_url,
+        website_url,
+        bio,
+        past_investments,
+        investment_type,
+        min_investment,
+        max_investment,
+        preferred_categories,
+        profile_image
+       FROM users
+       WHERE uid = ? AND is_investor = 1`,
+      [uid]
+    );
+
+    if (rows.length === 0) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.json(rows[0]);
+  } catch (err) {
+    console.error("GET PROFILE ERROR:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+};
+
+/**
+ * POST /auth/profile/update
+ * Update logged-in user's profile
+ */
+export const updateProfile1 = async (req, res) => {
+  try {
+    const uid = req.user.uid;
+
+    const {
+      name,
+      company_name,
+      phone,
+      min_investment,
+      max_investment,
+      past_investments,
+      investment_type,
+      preferred_categories,
+      bio
+    } = req.body;
+
+    await db.query(
+      `UPDATE users SET
+        name = ?,
+        company_name = ?,
+        phone = ?,
+        min_investment = ?,
+        max_investment = ?,
+        past_investments = ?,
+        investment_type = ?,
+        preferred_categories = ?,
+        bio = ?
+       WHERE uid = ? AND is_investor = 1`,
+      [
+        name,
+        company_name,
+        phone,
+        min_investment || null,
+        max_investment || null,
+        past_investments,
+        investment_type,
+        preferred_categories,
+        bio,
+        uid
+      ]
+    );
+
+    res.json({ success: true, message: "Profile updated successfully" });
+  } catch (err) {
+    console.error("UPDATE PROFILE ERROR:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
