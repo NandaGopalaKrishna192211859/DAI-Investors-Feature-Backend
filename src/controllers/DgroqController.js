@@ -248,17 +248,27 @@ export async function DmodifyProject(req, res) {
 
     // 1 — Updated Summary
     const summaryPrompt = `
-Modify the startup summary based on user changes.
+You are updating a startup idea summary.
 
-Original Summary:
-${project.full_input || ""}
+Original Startup Summary:
+${project.explanation || ""}
 
 User Modification Request:
 ${modification_text}
 
-if their is big stuff happens - remove unnecessary terms and try to keep a neat and clean diagram - don't stress yourself - give me good UML diagram
-Return a clean summary only.
+Task:
+Rewrite the startup summary incorporating the user's changes.
+
+Rules:
+- 4–5 professional sentences
+- Non-technical
+- Beginner-friendly
+- Focus on users, key features, flows, and overall goal
+- Do NOT include LLD, UML, classes, APIs, or technical terms
+
+Return ONLY the updated summary text.
 `;
+
     const updatedSummary = await callGroq(summaryPrompt);
 
     // 2 — Updated LLD
@@ -329,8 +339,8 @@ Return ONLY UML text.
       WHERE pid = ?
       `,
       [
-        updatedSummary,
         updatedLLD,
+        updatedSummary,
         umlPath,
         imageFullPath,
         modification_text,

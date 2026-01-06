@@ -1,0 +1,47 @@
+{"input":"user login flow","output":"@startuml actor User User->AuthService: login @enduml"}
+{"input":"signup new founder","output":"@startuml actor Founder Founder->AuthService: signup @enduml"}
+{"input":"reset password flow","output":"@startuml User->AuthService: reset password @enduml"}
+{"input":"verify otp during login","output":"@startuml User->AuthService: verify otp @enduml"}
+{"input":"logout from app","output":"@startuml User->AuthService: logout @enduml"}
+
+{"input":"add payment gateway","output":"@startuml User->PaymentService: initiate payment @enduml"}
+{"input":"confirm payment success","output":"@startuml PaymentService->User: payment success @enduml"}
+{"input":"handle payment failure","output":"@startuml PaymentService->User: payment failed @enduml"}
+{"input":"refund transaction","output":"@startuml PaymentService->User: refund @enduml"}
+{"input":"store payment record","output":"@startuml PaymentService->Database: store payment @enduml"}
+
+{"input":"create new project","output":"@startuml User->ProjectService: create project @enduml"}
+{"input":"edit existing project","output":"@startuml User->ProjectService: update project @enduml"}
+{"input":"view project details","output":"@startuml User->ProjectService: view project @enduml"}
+{"input":"archive old project","output":"@startuml User->ProjectService: archive project @enduml"}
+{"input":"delete project permanently","output":"@startuml User->ProjectService: delete project @enduml"}
+
+{"input":"send investor request","output":"@startuml Founder->RequestService: send request @enduml"}
+{"input":"investor accepts request","output":"@startuml Investor->RequestService: accept request @enduml"}
+{"input":"investor rejects request","output":"@startuml Investor->RequestService: reject request @enduml"}
+{"input":"cancel sent request","output":"@startuml User->RequestService: cancel request @enduml"}
+{"input":"view request status","output":"@startuml User->RequestService: view status @enduml"}
+
+{"input":"receive notification","output":"@startuml NotificationService->User: push alert @enduml"}
+{"input":"read notification","output":"@startuml User->NotificationService: read alert @enduml"}
+{"input":"clear all notifications","output":"@startuml User->NotificationService: clear alerts @enduml"}
+{"input":"notify approval","output":"@startuml System->NotificationService: approval alert @enduml"}
+{"input":"notify rejection","output":"@startuml System->NotificationService: rejection alert @enduml"}
+
+{"input":"upload pitch deck","output":"@startuml Founder->PitchService: upload pitch @enduml"}
+{"input":"investor views pitch","output":"@startuml Investor->PitchService: view pitch @enduml"}
+{"input":"update pitch document","output":"@startuml Founder->PitchService: update pitch @enduml"}
+{"input":"delete pitch file","output":"@startuml Founder->PitchService: delete pitch @enduml"}
+{"input":"store pitch data","output":"@startuml PitchService->Database: store pitch @enduml"}
+
+{"input":"schedule meeting","output":"@startuml MeetingService->CalendarService: schedule meeting @enduml"}
+{"input":"accept meeting invite","output":"@startuml Founder->MeetingService: accept meeting @enduml"}
+{"input":"reject meeting invite","output":"@startuml Founder->MeetingService: reject meeting @enduml"}
+{"input":"notify meeting update","output":"@startuml System->NotificationService: meeting update @enduml"}
+{"input":"store meeting details","output":"@startuml MeetingService->Database: store meeting @enduml"}
+
+{"input":"generate lld diagram","output":"@startuml User->LLDService: generate diagram @enduml"}
+{"input":"save generated lld","output":"@startuml User->LLDService: save lld @enduml"}
+{"input":"export lld as pdf","output":"@startuml User->ExportService: export pdf @enduml"}
+{"input":"export lld as image","output":"@startuml User->ExportService: export image @enduml"}
+{"input":"view lld history","output":"@startuml User->LLDService: view history @enduml"}

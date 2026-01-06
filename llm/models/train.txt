@@ -1,0 +1,209 @@
+{"input":"add user login","output":"@startuml actor User User->AuthService: login @enduml"}
+{"input":"enable user signup","output":"@startuml actor User User->AuthService: signup @enduml"}
+{"input":"add forgot password","output":"@startuml actor User User->AuthService: reset password @enduml"}
+{"input":"add otp verification","output":"@startuml actor User User->AuthService: verify otp @enduml"}
+{"input":"allow social login","output":"@startuml actor User User->AuthService: social auth @enduml"}
+
+{"input":"add payment options","output":"@startuml actor User User->PaymentService: select payment @enduml"}
+{"input":"enable card payment","output":"@startuml actor User User->PaymentService: card payment @enduml"}
+{"input":"add upi payment","output":"@startuml actor User User->PaymentService: upi payment @enduml"}
+{"input":"enable wallet payment","output":"@startuml actor User User->PaymentService: wallet pay @enduml"}
+{"input":"add payment confirmation","output":"@startuml PaymentService->User: payment status @enduml"}
+
+{"input":"create user profile","output":"@startuml actor User User->ProfileService: create profile @enduml"}
+{"input":"edit user profile","output":"@startuml actor User User->ProfileService: update profile @enduml"}
+{"input":"view user profile","output":"@startuml actor User User->ProfileService: view profile @enduml"}
+{"input":"upload profile image","output":"@startuml actor User User->ProfileService: upload image @enduml"}
+{"input":"delete user account","output":"@startuml actor User User->ProfileService: delete account @enduml"}
+
+{"input":"add project creation","output":"@startuml actor User User->ProjectService: create project @enduml"}
+{"input":"edit project details","output":"@startuml actor User User->ProjectService: update project @enduml"}
+{"input":"delete project","output":"@startuml actor User User->ProjectService: delete project @enduml"}
+{"input":"view project list","output":"@startuml actor User User->ProjectService: list projects @enduml"}
+{"input":"archive project","output":"@startuml actor User User->ProjectService: archive project @enduml"}
+
+{"input":"submit idea for review","output":"@startuml actor User User->ReviewService: submit idea @enduml"}
+{"input":"approve idea","output":"@startuml Reviewer->ReviewService: approve idea @enduml"}
+{"input":"reject idea","output":"@startuml Reviewer->ReviewService: reject idea @enduml"}
+{"input":"add review comments","output":"@startuml Reviewer->ReviewService: add comments @enduml"}
+{"input":"view review status","output":"@startuml User->ReviewService: view status @enduml"}
+
+{"input":"send notification","output":"@startuml System->NotificationService: send alert @enduml"}
+{"input":"push approval notification","output":"@startuml System->NotificationService: approval push @enduml"}
+{"input":"push rejection notification","output":"@startuml System->NotificationService: rejection push @enduml"}
+{"input":"view notifications","output":"@startuml User->NotificationService: view alerts @enduml"}
+{"input":"clear notifications","output":"@startuml User->NotificationService: clear alerts @enduml"}
+
+{"input":"add investor onboarding","output":"@startuml Investor->OnboardingService: onboard @enduml"}
+{"input":"add founder onboarding","output":"@startuml Founder->OnboardingService: onboard @enduml"}
+{"input":"verify investor profile","output":"@startuml Admin->OnboardingService: verify investor @enduml"}
+{"input":"verify founder profile","output":"@startuml Admin->OnboardingService: verify founder @enduml"}
+{"input":"store onboarding data","output":"@startuml OnboardingService->Database: store data @enduml"}
+
+{"input":"send investor request","output":"@startuml Founder->RequestService: send request @enduml"}
+{"input":"accept investor request","output":"@startuml Investor->RequestService: accept request @enduml"}
+{"input":"reject investor request","output":"@startuml Investor->RequestService: reject request @enduml"}
+{"input":"cancel request","output":"@startuml User->RequestService: cancel request @enduml"}
+{"input":"view request status","output":"@startuml User->RequestService: view status @enduml"}
+
+{"input":"add chat feature","output":"@startuml User->ChatService: send message @enduml"}
+{"input":"enable real time chat","output":"@startuml ChatService->User: realtime msg @enduml"}
+{"input":"store chat history","output":"@startuml ChatService->Database: save chat @enduml"}
+{"input":"delete chat","output":"@startuml User->ChatService: delete chat @enduml"}
+{"input":"block user in chat","output":"@startuml User->ChatService: block user @enduml"}
+
+{"input":"add search feature","output":"@startuml User->SearchService: search data @enduml"}
+{"input":"filter search results","output":"@startuml SearchService->User: filtered results @enduml"}
+{"input":"sort results","output":"@startuml SearchService->User: sorted results @enduml"}
+{"input":"save search history","output":"@startuml SearchService->Database: save history @enduml"}
+{"input":"clear search history","output":"@startuml User->SearchService: clear history @enduml"}
+
+{"input":"generate lld","output":"@startuml User->LLDService: generate design @enduml"}
+{"input":"export lld pdf","output":"@startuml User->ExportService: export pdf @enduml"}
+{"input":"export lld image","output":"@startuml User->ExportService: export image @enduml"}
+{"input":"save lld","output":"@startuml User->LLDService: save design @enduml"}
+{"input":"version lld","output":"@startuml LLDService->Database: versioning @enduml"}
+
+{"input":"enable admin login","output":"@startuml actor Admin Admin->AuthService: login @enduml"}
+{"input":"admin logout","output":"@startuml actor Admin Admin->AuthService: logout @enduml"}
+{"input":"reset admin password","output":"@startuml actor Admin Admin->AuthService: reset password @enduml"}
+{"input":"lock user account","output":"@startuml Admin->AuthService: lock account @enduml"}
+{"input":"unlock user account","output":"@startuml Admin->AuthService: unlock account @enduml"}
+
+{"input":"add role management","output":"@startuml Admin->RoleService: manage roles @enduml"}
+{"input":"assign user role","output":"@startuml Admin->RoleService: assign role @enduml"}
+{"input":"remove user role","output":"@startuml Admin->RoleService: remove role @enduml"}
+{"input":"view role permissions","output":"@startuml Admin->RoleService: view permissions @enduml"}
+{"input":"update role permissions","output":"@startuml Admin->RoleService: update permissions @enduml"}
+
+{"input":"add dashboard metrics","output":"@startuml Admin->DashboardService: view metrics @enduml"}
+{"input":"view user statistics","output":"@startuml Admin->AnalyticsService: user stats @enduml"}
+{"input":"view project analytics","output":"@startuml Admin->AnalyticsService: project stats @enduml"}
+{"input":"view revenue analytics","output":"@startuml Admin->AnalyticsService: revenue stats @enduml"}
+{"input":"export analytics report","output":"@startuml Admin->ExportService: export report @enduml"}
+
+{"input":"enable audit logs","output":"@startuml System->AuditService: log action @enduml"}
+{"input":"view audit logs","output":"@startuml Admin->AuditService: view logs @enduml"}
+{"input":"filter audit logs","output":"@startuml Admin->AuditService: filter logs @enduml"}
+{"input":"archive audit logs","output":"@startuml AuditService->Database: archive logs @enduml"}
+{"input":"delete audit logs","output":"@startuml Admin->AuditService: delete logs @enduml"}
+
+{"input":"add api access","output":"@startuml System->ApiService: enable access @enduml"}
+{"input":"generate api key","output":"@startuml Admin->ApiService: generate key @enduml"}
+{"input":"revoke api key","output":"@startuml Admin->ApiService: revoke key @enduml"}
+{"input":"validate api request","output":"@startuml ApiService->AuthService: validate token @enduml"}
+{"input":"log api usage","output":"@startuml ApiService->AnalyticsService: log usage @enduml"}
+
+{"input":"add subscription plan","output":"@startuml Admin->SubscriptionService: add plan @enduml"}
+{"input":"update subscription plan","output":"@startuml Admin->SubscriptionService: update plan @enduml"}
+{"input":"delete subscription plan","output":"@startuml Admin->SubscriptionService: delete plan @enduml"}
+{"input":"subscribe to plan","output":"@startuml User->SubscriptionService: subscribe @enduml"}
+{"input":"cancel subscription","output":"@startuml User->SubscriptionService: cancel plan @enduml"}
+
+{"input":"check subscription status","output":"@startuml User->SubscriptionService: status @enduml"}
+{"input":"renew subscription","output":"@startuml User->SubscriptionService: renew plan @enduml"}
+{"input":"upgrade subscription","output":"@startuml User->SubscriptionService: upgrade plan @enduml"}
+{"input":"downgrade subscription","output":"@startuml User->SubscriptionService: downgrade plan @enduml"}
+{"input":"notify subscription expiry","output":"@startuml System->NotificationService: expiry alert @enduml"}
+
+{"input":"enable file upload","output":"@startuml User->FileService: upload file @enduml"}
+{"input":"download file","output":"@startuml User->FileService: download file @enduml"}
+{"input":"delete file","output":"@startuml User->FileService: delete file @enduml"}
+{"input":"scan uploaded file","output":"@startuml FileService->SecurityService: scan file @enduml"}
+{"input":"store file metadata","output":"@startuml FileService->Database: save metadata @enduml"}
+
+{"input":"add feedback feature","output":"@startuml User->FeedbackService: submit feedback @enduml"}
+{"input":"view feedback","output":"@startuml Admin->FeedbackService: view feedback @enduml"}
+{"input":"respond to feedback","output":"@startuml Admin->FeedbackService: respond @enduml"}
+{"input":"rate application","output":"@startuml User->FeedbackService: rate app @enduml"}
+{"input":"store feedback","output":"@startuml FeedbackService->Database: store feedback @enduml"}
+
+{"input":"enable support ticket","output":"@startuml User->SupportService: raise ticket @enduml"}
+{"input":"assign support ticket","output":"@startuml Admin->SupportService: assign ticket @enduml"}
+{"input":"resolve support ticket","output":"@startuml SupportService->User: resolve ticket @enduml"}
+{"input":"close support ticket","output":"@startuml SupportService->Database: close ticket @enduml"}
+{"input":"view ticket history","output":"@startuml User->SupportService: ticket history @enduml"}
+
+{"input":"add system settings","output":"@startuml Admin->SettingsService: update settings @enduml"}
+{"input":"view system settings","output":"@startuml Admin->SettingsService: view settings @enduml"}
+{"input":"reset system settings","output":"@startuml Admin->SettingsService: reset settings @enduml"}
+{"input":"apply configuration changes","output":"@startuml SettingsService->System: apply config @enduml"}
+{"input":"log configuration change","output":"@startuml SettingsService->AuditService: log change @enduml"}
+
+{"input":"enable maintenance mode","output":"@startuml Admin->SystemService: maintenance on @enduml"}
+{"input":"disable maintenance mode","output":"@startuml Admin->SystemService: maintenance off @enduml"}
+{"input":"notify maintenance window","output":"@startuml System->NotificationService: maintenance alert @enduml"}
+{"input":"check system health","output":"@startuml Admin->SystemService: health check @enduml"}
+{"input":"log system status","output":"@startuml SystemService->Database: status log @enduml"}
+
+{"input":"add investor dashboard","output":"@startuml Investor->DashboardService: view dashboard @enduml"}
+{"input":"view founder dashboard","output":"@startuml Founder->DashboardService: view dashboard @enduml"}
+{"input":"display active projects","output":"@startuml DashboardService->User: show projects @enduml"}
+{"input":"display investment stats","output":"@startuml DashboardService->Investor: show stats @enduml"}
+{"input":"refresh dashboard data","output":"@startuml DashboardService->Database: refresh data @enduml"}
+
+{"input":"add pitch upload","output":"@startuml Founder->PitchService: upload pitch @enduml"}
+{"input":"view pitch deck","output":"@startuml Investor->PitchService: view pitch @enduml"}
+{"input":"update pitch deck","output":"@startuml Founder->PitchService: update pitch @enduml"}
+{"input":"delete pitch deck","output":"@startuml Founder->PitchService: delete pitch @enduml"}
+{"input":"store pitch file","output":"@startuml PitchService->Database: store pitch @enduml"}
+
+{"input":"request meeting","output":"@startuml Investor->MeetingService: request meeting @enduml"}
+{"input":"accept meeting request","output":"@startuml Founder->MeetingService: accept meeting @enduml"}
+{"input":"reject meeting request","output":"@startuml Founder->MeetingService: reject meeting @enduml"}
+{"input":"schedule meeting","output":"@startuml MeetingService->CalendarService: schedule @enduml"}
+{"input":"notify meeting update","output":"@startuml System->NotificationService: meeting alert @enduml"}
+
+{"input":"add due diligence","output":"@startuml Investor->DiligenceService: start review @enduml"}
+{"input":"upload diligence document","output":"@startuml Founder->DiligenceService: upload doc @enduml"}
+{"input":"review diligence data","output":"@startuml Investor->DiligenceService: review data @enduml"}
+{"input":"approve diligence","output":"@startuml Investor->DiligenceService: approve @enduml"}
+{"input":"store diligence record","output":"@startuml DiligenceService->Database: store record @enduml"}
+
+{"input":"create term sheet","output":"@startuml Investor->TermSheetService: create terms @enduml"}
+{"input":"edit term sheet","output":"@startuml Investor->TermSheetService: edit terms @enduml"}
+{"input":"send term sheet","output":"@startuml Investor->Founder: send term sheet @enduml"}
+{"input":"accept term sheet","output":"@startuml Founder->TermSheetService: accept terms @enduml"}
+{"input":"reject term sheet","output":"@startuml Founder->TermSheetService: reject terms @enduml"}
+
+{"input":"record investment","output":"@startuml PaymentService->InvestmentService: record investment @enduml"}
+{"input":"view investment history","output":"@startuml Investor->InvestmentService: history @enduml"}
+{"input":"view funding status","output":"@startuml Founder->InvestmentService: funding status @enduml"}
+{"input":"generate investment receipt","output":"@startuml InvestmentService->ExportService: generate receipt @enduml"}
+{"input":"store investment data","output":"@startuml InvestmentService->Database: store data @enduml"}
+
+{"input":"add cap table","output":"@startuml Founder->CapTableService: add table @enduml"}
+{"input":"update cap table","output":"@startuml Founder->CapTableService: update table @enduml"}
+{"input":"view cap table","output":"@startuml Investor->CapTableService: view table @enduml"}
+{"input":"calculate equity split","output":"@startuml CapTableService->System: calculate equity @enduml"}
+{"input":"store cap table","output":"@startuml CapTableService->Database: store table @enduml"}
+
+{"input":"enable document vault","output":"@startuml System->VaultService: enable vault @enduml"}
+{"input":"upload legal document","output":"@startuml User->VaultService: upload doc @enduml"}
+{"input":"view legal document","output":"@startuml User->VaultService: view doc @enduml"}
+{"input":"delete legal document","output":"@startuml User->VaultService: delete doc @enduml"}
+{"input":"secure document storage","output":"@startuml VaultService->Database: secure store @enduml"}
+
+{"input":"add compliance check","output":"@startuml System->ComplianceService: check rules @enduml"}
+{"input":"validate compliance status","output":"@startuml ComplianceService->User: compliance status @enduml"}
+{"input":"update compliance data","output":"@startuml Admin->ComplianceService: update data @enduml"}
+{"input":"audit compliance","output":"@startuml ComplianceService->AuditService: audit log @enduml"}
+{"input":"store compliance result","output":"@startuml ComplianceService->Database: store result @enduml"}
+
+{"input":"add activity timeline","output":"@startuml System->TimelineService: add event @enduml"}
+{"input":"view activity timeline","output":"@startuml User->TimelineService: view timeline @enduml"}
+{"input":"filter activity timeline","output":"@startuml User->TimelineService: filter timeline @enduml"}
+{"input":"sort timeline events","output":"@startuml TimelineService->User: sorted events @enduml"}
+{"input":"store timeline event","output":"@startuml TimelineService->Database: store event @enduml"}
+
+{"input":"enable recommendation engine","output":"@startuml System->RecommendationService: enable engine @enduml"}
+{"input":"recommend investors","output":"@startuml RecommendationService->Founder: investor list @enduml"}
+{"input":"recommend projects","output":"@startuml RecommendationService->Investor: project list @enduml"}
+{"input":"refresh recommendations","output":"@startuml RecommendationService->Database: refresh data @enduml"}
+{"input":"track recommendation usage","output":"@startuml RecommendationService->AnalyticsService: track usage @enduml"}
+
+{"input":"add logout feature","output":"@startuml User->AuthService: logout @enduml"}
+{"input":"auto logout inactive user","output":"@startuml System->AuthService: auto logout @enduml"}
+{"input":"track session activity","output":"@startuml AuthService->AnalyticsService: track session @enduml"}
+{"input":"invalidate session","output":"@startuml AuthService->Database: invalidate session @enduml"}
+{"input":"notify logout","output":"@startuml AuthService->NotificationService: logout alert @enduml"}
