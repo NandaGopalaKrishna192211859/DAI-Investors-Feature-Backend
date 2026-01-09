@@ -1,0 +1,201 @@
+@startuml
+header "Smart Bike Rental App\nLLD Class Diagram"
+
+package "User Module" as USER_MODULE {
+    class User {
+        - _id
+        - username
+        - email
+        - password
+        + registerUser(username, email, password)
+        + loginUser(email, password)
+        + getUserProfile()
+        + updateSettings()
+    }
+    class UserProfile {
+        - id
+        - username
+        - email
+        - profilePicture
+        + getUserDetails()
+        + updateProfilePicture()
+        + updateUsername()
+        + updateEmail()
+    }
+}
+
+package "Bike Module" as BIKE_MODULE {
+    class Bike {
+        - id
+        - brand
+        - model
+        - condition
+        + listBike(brand, model, condition)
+        + editBike(brand, model, condition)
+        + removeBike()
+        + getRentalHistory()
+    }
+    class BikeListing {
+        - id
+        - bikeId
+        - price
+        - rentalStatus
+        + getRentalStatus()
+        + updateRentalStatus()
+        + updatePrice()
+    }
+}
+
+package "Ride Module" as RIDE_MODULE {
+    class Ride {
+        - id
+        - riderId
+        - bikeId
+        - startLocation
+        - endLocation
+        + createRide(riderId, bikeId, startLocation, endLocation)
+        + getRideStatus()
+        + updateRideStatus()
+        + getNavigation()
+    }
+    class RideTracker {
+        - id
+        - rideId
+        - trackerId
+        - latitude
+        - longitude
+        + trackRide(rideId, trackerId, latitude, longitude)
+        + updateRidePosition()
+    }
+}
+
+package "Payment Module" as PAYMENT_MODULE {
+    class Payment {
+        - id
+        - rideId
+        - amount
+        - paymentMethod
+        + processPayment(rideId, amount, paymentMethod)
+        + updatePaymentStatus()
+        + refundAmount()
+    }
+    class PaymentMethod {
+        - id
+        - name
+        - description
+        + getPaymentMethodDetails()
+        + updatePaymentMethod()
+    }
+}
+
+package "Notification Module" as NOTIFICATION_MODULE {
+    class Notification {
+        - id
+        - recipientId
+        - message
+        - notificationType
+        + sendNotification(recipientId, message, notificationType)
+        + updateNotificationStatus()
+        + getNotificationHistory()
+    }
+    class NotificationPreference {
+        - id
+        - recipientId
+        - notificationType
+        + updateNotificationPreference()
+        + getNotificationPreference()
+    }
+}
+
+package "Employee Module" as EMPLOYEE_MODULE {
+    class Employee {
+        - id
+        - name
+        - email
+        - phoneNumber
+        + AssignEmployeeToRide(rideId)
+        + getAvailableDeliveries()
+        + updateAvailability()
+    }
+}
+
+package "Administration Module" as ADMIN_MODULE {
+    class Admin {
+        - id
+        - username
+        - password
+        + manageSystemSettings()
+        + viewAnalytics()
+        + updateSystemConfigurations()
+    }
+    class Analytics {
+        - id
+        - type
+        - data
+        + viewRentalTrends()
+        + viewUserBehavior()
+        + updateAnalytics()
+    }
+}
+
+package "Features" as FEATURES {
+    class SearchEngine {
+        - id
+        - type
+        - filters
+        + searchRides(distance, bikeType)
+        + getFilters()
+        + updateFilters()
+    }
+    class LiveTracking {
+        - id
+        - trackerId
+        - latitude
+        - longitude
+        + trackRide(rideId, trackerId, latitude, longitude)
+        + updateRidePosition()
+    }
+    class AutoPayment {
+        - id
+        - paymentMethod
+        - amount
+        + processAutoPayment(rideId, paymentMethod, amount)
+        + updatePaymentStatus()
+    }
+    class DeliveryServices {
+        - id
+        - employeeId
+        - deliveryStatus
+        + assignEmployeeToRide(rideId)
+        + getDeliveryProgress()
+        + updateDeliveryStatus()
+    }
+    class BikeOwnerManagement {
+        - id
+        - bikeId
+        - ownerName
+        + editBike(brand, model, condition)
+        + updateBikePrice()
+        + removeBike()
+    }
+}
+
+ USER_MODULE --* RideModule : registers
+ USER_MODULE --* PaymentModule : makes payments
+ RIDE_MODULE <-- RideTracker : tracks
+ RIDE_MODULE --> NotificationModule : notifies
+ PAYMENT_MODULE <-- Payment : processes payment
+ EMPLOYEE_MODULE <-- Employee : manages employee
+ ADMIN_MODULE <-- Admin : manages system settings
+ FEATURES <-- SearchEngine : searches
+ FEATURES <-- LiveTracking : live tracking
+ FEATURES <-- AutoPayment : processes auto payment
+ FEATURES <-- DeliveryServices : assigns employee
+ FEATURES <-- BikeOwnerManagement : manages bike owner
+ BIKE_MODULE <-- Bike : lists bikes
+ BIKE_MODULE <-- BikeListing : updates bike listing
+
+@enduml
+
+
+This updated PlantUML code reflects the LLD provided and represents the class diagram with the given details. Each class has been assigned its own description and has been placed within their respective packages for better organization and understanding.

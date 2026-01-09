@@ -1,0 +1,226 @@
+@startuml
+package "Login Module" {
+    class User {
+        +email: String
+        +password: String
+        +username: String
+        +role: String
+
+        +Register()
+        +Login()
+        +UpdateProfile()
+        +DeleteAccount()
+    }
+    class Admin {
+        +email: String
+        +password: String
+        +username: String
+        +role: String
+
+        +ApproveBikeListing()
+        +RejectBikeListing()
+        +UpdateUserAccount()
+        +DeleteUserAccount()
+    }
+    class Admin -> User : Notify
+    class User -> Payment : Payment
+    class Admin -> Notification : Notification
+}
+
+package "Database Module" {
+    class Database {
+        +username: String
+        +password: String
+        +host: String
+        +database: String
+
+        +SaveUser()
+        +GetUser()
+        +SaveBike()
+        +GetBike()
+        +SearchBikes()
+    }
+    class Database -> Inventory : SaveBikeInventory
+    class Database -> Database : GetBikeInventory
+    class User -> Database : SaveUser
+    class Bike -> Database : SaveBike
+}
+
+package "Bike Module" {
+    class Bike {
+        +bike_id: Integer
+        +bike_name: String
+        +bike_description: String
+        +bike_price: Float
+
+        +SaveBike()
+        +GetBike()
+        +UpdateBike()
+        +DeleteBike()
+    }
+    class Bike -> User : Notify
+    class Bike -> Notification : Notification
+    class Bike -> Inventory : GetBikeInventory
+    class Promotions -> Bike : RunPromotion
+}
+
+package "Payment Module" {
+    class Payment {
+        +credit_card_number: String
+        +credit_card_type: String
+        +amount: Float
+        +status: Integer
+
+        +MakePayment()
+        +CancelPayment()
+        +Refund()
+    }
+    class Payment -> User : Payment
+    class Payment -> Notification : Notification
+    class Admin -> Payment : MakePayment
+}
+
+package "Notification Module" {
+    class Notification {
+        +message: String
+        +to: String
+        +from: String
+        +type: String
+
+        +SendPushNotification()
+        +SendEmailNotification()
+    }
+    class Notification -> User : Notify
+    class Notification -> Bike : Notification
+    class Admin -> Notification : SendNotification
+}
+
+package "Ride Module" {
+    class Ride {
+        +ride_id: Integer
+        +start_location: String
+        +end_location: String
+        +status: Integer
+
+        +UpdateRideStatus()
+        +GetRideStatus()
+        +CancelRide()
+        +CompleteRide()
+    }
+    class Ride -> User : Notification
+    class Ride -> Bike : Notification
+    class Ride -> Notification : Notification
+}
+
+package "Security Module" {
+    class Security {
+        +password: String
+        +email: String
+        +username: String
+        +role: String
+
+        +EncryptUserData()
+        +DecryptUserData()
+        +ValidateUserSession()
+    }
+    class Security -> User : ValidateUserSession
+    class Security -> Database : EncryptUserData
+}
+
+package "Rating Module" {
+    class Rating {
+        +bike_id: Integer
+        +user_rate: Integer
+        +bike_rating: Integer
+        +user_id: Integer
+
+        +RateBike()
+        +RateUser()
+        +GetRating()
+    }
+    class Rating -> Bike : RateBike
+    class Rating -> User : RateUser
+    class Rating -> Notification : Notification
+}
+
+package "Review Module" {
+    class Review {
+        +review_id: Integer
+        +review: String
+        +rider_name: String
+        +bike_name: String
+
+        +WriteReview()
+        +GetReview()
+        +DeleteReview()
+    }
+    class Review -> Bike : WriteReview
+    class Review -> User : WriteReview
+    class Review -> Notification : Notification
+}
+
+package "Booking Module" {
+    class Booking {
+        +booking_id: Integer
+        +bike_id: Integer
+        +booked_by: String
+        +booking_date: String
+
+        +BookBike()
+        +CancelBooking()
+        +UpdateBookingStatus()
+    }
+    class Booking -> User : BookBike
+    class Booking -> Bike : BookBike
+    class Booking -> Inventory : SaveBikeInventory
+    class Booking -> Notification : Notification
+}
+
+package "Inventory Module" {
+    class Inventory {
+        +bike_id: Integer
+        +bike_status: String
+        +bike_price: Float
+        +bike_quantity: Integer
+
+        +SaveBikeInventory()
+        +GetBikeInventory()
+        +UpdateBikeInventory()
+    }
+    class Inventory -> Database : SaveBikeInventory
+    class Inventory -> Bike -> GetBikeInventory
+}
+
+package "Insurance Module" {
+    class Insurance {
+        +policy_id: Integer
+        +bike_id: Integer
+        +start_date: String
+        +end_date: String
+
+        +GenerateInsurancePolicy()
+        +RenewInsurancePolicy()
+        +CancelInsurancePolicy()
+    }
+    class Insurance -> User : GeneratePolicy
+    class Insurance -> Bike : GeneratePolicy
+    class Insurance -> Notification : Notification
+}
+
+package "Promotion Module" {
+    class Promotion {
+        +promo_id: Integer
+        +bike_id: Integer
+        +prom_name: String
+        +prom_price: Float
+
+        +RunPromotion()
+        +UpdatePromotionStatus()
+        +CancelPromotion()
+    }
+    class Promotion -> User : RunPromotion
+    class Promotion -> Bike : RunPromotion
+    class Promotion -> Notification : Notification
+}
+
+@enduml

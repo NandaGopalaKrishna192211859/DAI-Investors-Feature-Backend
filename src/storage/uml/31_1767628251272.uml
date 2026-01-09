@@ -1,0 +1,150 @@
+@startuml
+package Presentation {
+  class View {
+    +render()
+    +handleEvent()
+    +getComponent()
+    +setComponent()
+  }
+  class Controller {
+    +handleRequest()
+    +generateResponse()
+    +getUserDetails()
+    +updateUserDetails()
+  }
+  class Resource {
+    +getApiData()
+    +postData()
+    +updateData()
+    +deleteData()
+  }
+}
+
+package BusinessLogic {
+  class UserService {
+    +registerUser()
+    +loginUser()
+    +updateUserProfile()
+    +getUserDetails()
+  }
+  class BikeService {
+    +listBikes()
+    +updateBike()
+    +rentBike()
+    +returnBike()
+  }
+  class PaymentService {
+    +processPayment()
+    +handlePaymentFailure()
+    +capturePayment()
+    +refundPayment()
+  }
+  class DeliveryService {
+    +routePlanning()
+    +calculateDistance()
+    +calculateTime()
+    +getDirections()
+  }
+  class NotificationService {
+    +sendNotification()
+    +getNotification()
+    +updateNotification()
+    +deleteNotification()
+  }
+  class AdminService {
+    +manageSettings()
+    +updateConfig()
+    +trackAnalytics()
+    +getAnalytics()
+  }
+}
+
+package DataAccess {
+  class UserDAO {
+    +saveUser()
+    +fetchUser()
+    +updateUser()
+    +deleteUser()
+  }
+  class BikeDAO {
+    +saveBike()
+    +fetchBike()
+    +updateBike()
+    +deleteBike()
+  }
+  class PaymentDAO {
+    +savePayment()
+    +fetchPayment()
+    +updatePayment()
+    +deletePayment()
+  }
+  class NotificationDAO {
+    +saveNotification()
+    +fetchNotification()
+    +updateNotification()
+    +deleteNotification()
+  }
+  class DeliveryDAO {
+    +saveRoute()
+    +fetchRoute()
+    +updateRoute()
+    +deleteRoute()
+  }
+}
+
+package DataStorage {
+  class Database {
+    +createTable()
+    +insertRow()
+    +updateRow()
+    +deleteRow()
+  }
+  class DatabaseSchema {
+    +createSchema()
+    +alterSchema()
+    +dropSchema()
+    +getView()
+  }
+  class Cache {
+    +setKey()
+    +getKey()
+    +removeKey()
+    +clearCache()
+  }
+}
+
+package ExternalServices {
+  class GoogleMapsAPI {
+    +getDirections()
+    +reverseGeocode()
+    +geocode()
+    +getAddress()
+  }
+  class PaymentGateway {
+    +chargeCard()
+    +refundCard()
+    +getToken()
+    +verifyToken()
+  }
+}
+
+View --|> Controller
+Controller --|> Resource
+UserService --|> Controller
+BikeService --|> Controller
+PaymentService --|> Controller
+DeliveryService --> Controller
+NotificationService --> Controller
+AdminService --> Controller
+UserDAO --|> DataStorage
+BikeDAO --|> DataStorage
+PaymentDAO --|> DataStorage
+NotificationDAO --|> DataStorage
+DeliveryDAO --|> DataStorage
+Database --|> DataStorage
+DatabaseSchema --|> Database
+Cache --|> DataStorage
+GoogleMapsAPI --|> ExternalServices
+PaymentGateway --|> ExternalServices
+
+@enduml

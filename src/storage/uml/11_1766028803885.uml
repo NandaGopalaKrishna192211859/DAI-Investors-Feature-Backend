@@ -1,0 +1,153 @@
+@startuml
+Here's your final PlantUML class diagram.
+
+```plantuml
+@startuml
+
+' UserManagement package
+package UserManagement {
+    class UserService {
+        +token: string
+        +email: string
+        +password: string
+
+        +login(username: string, password: string): boolean
+        +register(email: string, password: string): void
+    }
+
+    note "Handles user API logic" as N1 <<api>>
+    UserService .. N1
+
+    class UserRepository {
+        +users: list
+        +findUsers(): list
+        +createUser(user: User): void
+    }
+    UserService --> UserRepository
+
+    class User {
+        +id: int
+        +name: string
+        +email: string
+        +password: string
+
+        +getInfo(): string
+        +setName(name: string): void
+    }
+    UserRepository --> User
+}
+
+' BillingModule package
+package BillingModule {
+    class PaymentService {
+        +paymentType: string
+        +amount: float
+
+        +makePayment(paymentAmount: float): boolean
+        +cancelPayment(paymentId: int): void
+    }
+
+    class PaymentGateway {
+        +gatewayType: string
+        +paymentStatus: string
+
+        +processPayment(paymentAmount: float): boolean
+        +cancelPayment(paymentId: int): void
+    }
+    PaymentService --> PaymentGateway
+
+    class Payment {
+        +id: int
+        +amount: float
+        +status: string
+
+        +getStatus(): string
+        +updateStatus(status: string): void
+    }
+    PaymentGateway --> Payment
+}
+
+' DataLayer package
+package DataLayer {
+    class BikeRepository {
+        +bikes: list
+        +findBikes(): list
+        +createBike(bike: Bike): void
+    }
+
+    class Bike {
+        +id: int
+        +name: string
+        +type: string
+        +speedLimit: int
+        +rating: float
+        +condition: string
+
+        +getInfo(): string
+        +setName(name: string): void
+    }
+    BikeRepository --> Bike
+}
+
+' CommunicationLayer package
+package CommunicationLayer {
+    class StationService {
+        +stationName: string
+        +stationAddress: string
+        +availability: boolean
+
+        +getStationInfo(): string
+        +updateAvailability(): void
+    }
+
+    class StationRepository {
+        +stations: list
+        +findStations(): list
+        +createStation(station: Station): void
+    }
+    StationService --> StationRepository
+
+    class Station {
+        +id: int
+        +name: string
+        +address: string
+        +availability: boolean
+
+        +getInfo(): string
+        +setName(name: string): void
+    }
+    StationRepository --> Station
+}
+
+' SystemModule package
+package SystemModule {
+    class SettingsService {
+        +settings: map
+        +getSettings(): map
+        +updateSettings(settings: map): void
+    }
+
+    class MaintenanceService {
+        +maintenanceType: string
+        +status: string
+
+        +performMaintenance(maintenanceType: string): boolean
+        +getMaintenanceStatus(): string
+    }
+    SettingsService --> MaintenanceService
+
+    class ErrorService {
+        +errorType: string
+        +status: string
+
+        +raiseError(errorType: string): boolean
+        +getErrorStatus(): string
+    }
+    MaintenanceService --> ErrorService
+}
+
+@enduml
+```
+
+Please note that this is a simplified version according to the requirements you provided and actual implementation would require more detail and might need to be adjusted based on real-world needs and complexities of your project.
+@enduml

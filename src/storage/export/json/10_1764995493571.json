@@ -1,0 +1,16 @@
+{
+  "pid": 10,
+  "project_title": "saved2",
+  "q1": "A smart bike rental app for city commuters",
+  "q2": "Daily commuters, tourists, bike owners, city admin",
+  "q3": "Helps people quickly find, unlock, and rent bikes across the city",
+  "q4": "Search bikes, scan QR to unlock, ride tracking, digital payments",
+  "q5": "The service should feel fast, reliable, and easy to use",
+  "full_input": "Q1: A smart bike rental app for city commuters\n    Q2: Daily commuters, tourists, bike owners, city admin\n    Q3: Helps people quickly find, unlock, and rent bikes across the city\n    Q4: Search bikes, scan QR to unlock, ride tracking, digital payments\n    Q5: The service should feel fast, reliable, and easy to use\n    \n    Q7: Users choose bikes based on nearby availability.\n    Q8: Search filters include distance, price per hour, and bike type.\n    Q9: Comparison is done using ratings, bike condition, and speed limit.\n    Q10: Steps: locate bike, scan QR, unlock, ride, end trip, auto payment.\n    Q11: Users track ride time, cost, and distance live.\n    Q12: Users can save favourite bike stations.\n    Q13: Bike owners can list their bikes and set rental availability.\n    Q14: We provide weekend offers and free first ride.\n    Q15: Refunds given if bike has mechanical issues.\n    Q16: Users can chat with support or report bike damage.\n    Q17: If a bike is unavailable, show nearest alternative stations.\n    \n    Q18: Add push notifications for ride end alerts, maintenance alerts, and fast re-booking.",
+  "explanation": "Low level design contains classes representing data models (User, Bike, Rental), services (UserService, BikeService, RentalService) handling business logic, repositories (UserRepository, BikeRepository, RentalRepository) for database access, API controllers (BikeRentalController, UserController) to expose functionalities, utility classes (LocationService, NotificationService) and configuration classes (AppConfig, SecurityConfig). It also defines relationships between these components, including dependency injection from services to repositories.",
+  "modification_version": "1.0.2",
+  "uml_path": "src/storage/uml/10_1764995402075.uml",
+  "image_path": "src/storage/uml/10_1764995402075.png",
+  "created_at": "2025-12-06T03:39:36.000Z",
+  "updated_at": "2025-12-06T04:30:03.000Z"
+}

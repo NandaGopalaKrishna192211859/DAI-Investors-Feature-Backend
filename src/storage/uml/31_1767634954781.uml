@@ -1,0 +1,137 @@
+@startuml
+package User {
+  class UserRegistration {
+    +create_account(username: String, email: String, password: String)
+    +validate_user_input(username: String, email: String, password: String)
+    +send_verification_email(email: String)
+    +handle_registration(username: String, email: String, password: String)
+  }
+
+  class UserLogin {
+    +authenticate(username: String, password: String)
+    +get_user_object(username: String)
+    +login(username: String, password: String)
+    +check_credentials(username: String, password: String)
+  }
+
+  class UserInformation {
+    +user_id: Integer
+    +username: String
+    +email: String
+    +password: String
+  }
+}
+
+package Database {
+  class DatabaseConnection {
+    +initialize_database_connection()
+    +close_database_connection()
+    +connect_to_database()
+    +disconnect_from_database()
+  }
+
+  class DataStorage {
+    +create_table_in_database(table_name: String, columns: String)
+    +insert_data_into_database(table_name: String, data: String)
+    +update_data_in_database(table_name: String, data: String)
+    +delete_data_from_database(table_name: String)
+  }
+
+  class QueryExecution {
+    +execute_select_query(query: String)
+    +execute_insert_query(query: String)
+    +execute_update_query(query: String)
+    +execute_delete_query(query: String)
+  }
+}
+
+package Bike {
+  class BikeListing {
+    +get_available_bikes()
+    +update_bike_availability(bike_id: Integer, status: String)
+    +add_bike_to_list(bike_id: Integer, status: String)
+    +remove_bike_from_list(bike_id: Integer)
+  }
+
+  class BikeAvailability {
+    +bike_id: Integer
+    +availability_status: String
+  }
+}
+
+package Ride {
+  class RideStatus {
+    +change_ride_status(status: String)
+    +get_ride_status()
+    +update_ride_status(status: String)
+    +get Ride Status(status: String)
+  }
+
+  class RideNavigation {
+    +get_directions(from: String, to: String)
+    +get_ride_location(location: String)
+    +calculate_distance(from: String, to: String)
+    +calculate_time(from: String, to: String)
+  }
+}
+
+package Payment {
+  class DigitalPayment {
+    +process_payment(amount: Float)
+    +handle_payment_refund()
+    +check_transaction_status()
+    +capture_transaction()
+  }
+
+  class PaymentGateway {
+    +initialize_payment_gateway()
+    +finalize_payment()
+    +process_credit_card_payment()
+    +check_payment_status()
+  }
+}
+
+package Notification {
+  class PushNotification {
+    +create_push_notification(message: String)
+    +send_push_notification()
+    +check_subscription_status()
+    +get_notification_status()
+  }
+
+  class EmailNotification {
+    +create_email_notification(message: String, email: String)
+    +send_email_notification()
+    +check_email_status()
+    +get_notification_email()
+  }
+}
+
+package Administration {
+  class SystemSettings {
+    +initialize_system_settings()
+    +update_system_settings()
+    +get_system_settings()
+    +save_system_settings()
+  }
+
+  class Analytics {
+    +collect_analytics_data()
+    +store_analytics_data()
+    +display_analytics_data()
+    +get_analytics_data()
+  }
+}
+
+UserRegistration --* UserLogin
+UserRegistration --* UserInformation
+UserLogin --* UserInformation
+DatabaseConnection --* DataStorage
+DataStorage --* QueryExecution
+BikeListing --* BikeAvailability
+RideStatus --* RideNavigation
+DigitalPayment --* PaymentGateway
+PushNotification --* EmailNotification
+SystemSettings --* Analytics
+
+@enduml

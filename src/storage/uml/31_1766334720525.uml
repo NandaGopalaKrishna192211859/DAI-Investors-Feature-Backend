@@ -1,0 +1,187 @@
+@startuml
+package BikeRentalSystem {
+  package Administration {
+    class SystemSettings {
+      +id: int
+      +name: String
+      +config: String
+      +save(): void
+      +update(): void
+      +load(): String
+    }
+
+    class Analytics {
+      +id: int
+      +userBehavior: String
+      +bikeRentalTrends: String
+      +analyze(): void
+      +display(): void
+    }
+
+    class UserRoles {
+      +id: int
+      +name: String
+      +permissions: String
+      +create(): void
+      +edit(): void
+      +delete(): void
+    }
+  }
+
+  package User {
+    class UserProfile {
+      +id: int
+      +name: String
+      +email: String
+      +password: String
+      +save(): void
+      +update(): void
+    }
+
+    class UserSettings {
+      +id: int
+      +notifications: String
+      +bikePreference: String
+      +recommends: String
+      +save(): void
+      +update(): void
+    }
+
+    class UserLogin {
+      +id: int
+      +username: String
+      +password: String
+      +verify(): boolean
+      +login(): void
+      +logout(): void
+    }
+
+    class UserRegistration {
+      +id: int
+      +username: String
+      +name: String
+      +email: String
+      +password: String
+      +register(): void
+      +verifyEmail(): void
+    }
+  }
+
+  package Bike {
+    class BikeListing {
+      +id: int
+      +name: String
+      +type: String
+      +availability: String
+      +save(): void
+      +update(): void
+    }
+
+    class BikeRentalHistory {
+      +id: int
+      +userId: int
+      +bikeId: int
+      +rentalDate: String
+      +returnDate: String
+      +save(): void
+      +update(): void
+    }
+
+    class BikeRental {
+      +id: int
+      +userId: int
+      +bikeId: int
+      +rentalStatus: String
+      +startDate: String
+      +endDate: String
+      +save(): void
+      +update(): void
+    }
+  }
+
+  package Payment {
+    class PaymentMethod {
+      +id: int
+      +type: String
+      +cardNumber: String
+      +expirationDate: String
+      +save(): void
+      +update(): void
+    }
+
+    class PaymentTransaction {
+      +id: int
+      +userId: int
+      +amount: decimal
+      +paymentType: String
+      +date: String
+      +save(): void
+      +update(): void
+    }
+
+    class PaymentAnalytics {
+      +id: int
+      +userId: int
+      +totalPayment: decimal
+      +paymentFrequency: String
+      +analyze(): void
+      +display(): void
+    }
+  }
+
+  package Notification {
+    class UserNotification {
+      +id: int
+      +userId: int
+      +message: String
+      +type: String
+      +date: String
+      +send(): void
+      +cancel(): void
+    }
+  }
+
+  package Ride {
+    class RideTracker {
+      +id: int
+      +userId: int
+      +bikeId: int
+      +trackingDate: String
+      +status: String
+      +save(): void
+      +update(): void
+    }
+
+    class RideHistory {
+      +id: int
+      +userId: int
+      +bikeId: int
+      +startDate: String
+      +endDate: String
+      +save(): void
+      +update(): void
+    }
+
+    class LiveTracking {
+      +id: int
+      +userId: int
+      +bikeId: int
+      +trackingStatus: String
+      +update(): void
+    }
+  }
+
+  package ScanUnlock {
+    class ScanUnlock {
+      +id: int
+      +userId: int
+      +bikeId: int
+      +scanDate: String
+      +unlockStatus: String
+      +save(): void
+      +update(): void
+    }
+  }
+}
+
+@enduml

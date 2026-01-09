@@ -1,0 +1,87 @@
+@startuml
+package "User Module" {
+    class User {
+        - username
+        - password
+        - email
+        - profile
+        + handleRegistration()
+        + handleLogin()
+        + handleOnlinePayment()
+        + manageProfile()
+    }
+}
+
+package "Database Module" {
+    class Database {
+        - username
+        - password
+        - host
+        - database
+        + connect()
+        + disconnect()
+        + manageData()
+        + backupData()
+    }
+}
+
+package "Payment Module" {
+    class Payment {
+        - mode
+        - status
+        - amount
+        - paymentId
+        + makePayment()
+        + initiatePayment()
+        + confirmPayment()
+        + cancelPayment()
+    }
+}
+
+package "Bike Module" {
+    class Bike {
+        - id
+        - type
+        - color
+        - availability
+        + manageListings()
+        + manageAvailability()
+        + updateStatus()
+        + removeListing()
+    }
+}
+
+package "Notification Module" {
+    class Notification {
+        - type
+        - sender
+        - receiver
+        - content
+        + sendMessage()
+        + sendEmail()
+        + notifyUser()
+        + reportIssue()
+    }
+}
+
+package "Ride Module" {
+    class Ride {
+        - id
+        - startTime
+        - endTime
+        - status
+        + trackStatus()
+        + getNavigation()
+        + endRide()
+        + rateRide()
+    }
+}
+
+User ->> Database : registration
+User ->> Payment : onlinePayment
+Database ->> Payment : paymentStatus
+Bike ->> Notification : messageUser
+Ride ->> Notification : notifyUser
+Notification ->> User : messageNotification
+Payment ->> Ride : paymentConfirmation
+@enduml

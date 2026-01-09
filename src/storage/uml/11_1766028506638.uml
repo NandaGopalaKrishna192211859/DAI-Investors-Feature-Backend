@@ -1,0 +1,90 @@
+@startuml
+Here's the PlantUML code representing the Smart Bike class diagram, adhering to all the specified rules:
+
+```plantuml
+@startuml
+
+package UserModule {
+    class User {
+        +username: string
+        +email: string
+        +password: string
+        +favorites: boolean
+        +ride_history: string
+
+        +user_sign_up(): void
+        +user_login(): void
+        +user_profile_update(): void
+        +save_favorites(): void
+        +receive_weekend_offers(): void
+    }
+}
+
+note "Handles user API logic" as N1 <<api>>
+User .. N1
+
+package BikeModule {
+    class Bike {
+        +bike_id: int
+        +bike_number: int
+        +bike_type: string
+        +bike_availability: boolean
+        +rental_status: boolean
+
+        +bike_register(): void
+        +bike_rental_request(): void
+        +bike_maintenance_schedule(): void
+        +manage_bike_availability(): void
+    }
+}
+
+UserModule --> BikeModule
+
+package PaymentModule {
+    class Payment {
+        +user_id: int
+        +rental_id: int
+        +payment_amount: float
+        +payment_status: boolean
+
+        +automatic_payment(): void
+        +refund_process(): void
+        +payment_gateway_integration(): void
+    }
+}
+
+BikeModule --> PaymentModule
+
+package NavigationModule {
+    class Nav {
+        +bike_station_locations: string
+        +routes: string
+        +traffic_info: boolean
+
+        +route_suggestion(): void
+        +alternative_route_suggestion(): void
+        +real_time_route_updates(): void
+    }
+}
+
+PaymentModule --> NavigationModule
+
+package SupportModule {
+    class Support {
+        +user_queries: string
+        +agent_info: string
+        +feedback_system: boolean
+
+        +user_query(): void
+        +chat_support_integration(): void
+        +query_resolution(): void
+    }
+}
+
+NavigationModule --> SupportModule
+
+@enduml
+```
+
+The class diagram represents the Smart Bike system, divided into five modules: UserModule, BikeModule, PaymentModule, NavigationModule, and SupportModule. Each module contains classes with attributes and operations as specified in the problem description. The relationships between classes represent the interactions between modules, and notes provide additional information about the logic flow.
+@enduml

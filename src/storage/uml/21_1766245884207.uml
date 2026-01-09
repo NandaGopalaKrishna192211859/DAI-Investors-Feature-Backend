@@ -1,0 +1,199 @@
+@startuml
+```plantuml
+@startuml
+
+package "Data Layer" {
+    package "SQL Database" {
+        class User {
+            +id: int
+            +username: string
+            +email: string
+            +password: string
+
+            +getUserInfo(): string
+            +saveUserInfo(): boolean
+            +login(): boolean
+            +logout(): void
+        }
+
+        class Course {
+            +id: int
+            +title: string
+            +description: string
+            +topic: string
+
+            +getCourseInfo(): string
+            +saveCourseInfo(): boolean
+            +createQuiz(): void
+            +saveQuiz(): boolean
+        }
+
+        class LearningPlan {
+            +id: int
+            +userId: int
+            +plan: string
+
+            +getLearningPlan(): string
+            +saveLearningPlan(): boolean
+            +updateLearningPlan(): boolean
+        }
+
+        class CourseEnrollment {
+            +id: int
+            +userId: int
+            +courseId: int
+
+            +getCourseEnrollment(): string
+            +saveCourseEnrollment(): boolean
+            +deleteCourseEnrollment(): boolean
+        }
+
+        class Progress {
+            +id: int
+            +userId: int
+            +courseId: int
+            +progress: int
+
+            +getProgress(): string
+            +saveProgress(): boolean
+            +updateProgress(): boolean
+        }
+
+        class Notification {
+            +id: int
+            +userId: int
+            +title: string
+            +content: string
+
+            +getNotification(): string
+            +saveNotification(): boolean
+            +deleteNotification(): boolean
+        }
+
+        class ForumPost {
+            +id: int
+            +userId: int
+            +postId: int
+            +content: string
+
+            +getForumPost(): string
+            +saveForumPost(): boolean
+            +updateForumPost(): boolean
+        }
+    }
+
+    package "API Layer" {
+        class UserAPI {
+            +createUser(): boolean
+            +login(): boolean
+            +logout(): void
+            +saveUserInfo(): boolean
+        }
+
+        class CourseAPI {
+            +createCourse(): boolean
+            +saveCourseInfo(): boolean
+            +createQuiz(): void
+            +saveQuiz(): boolean
+        }
+
+        class RecommendationAPI {
+            +createLearningPlan(): boolean
+            +saveLearningPlan(): boolean
+            +updateLearningPlan(): boolean
+        }
+
+        class ProgressAPI {
+            +saveProgress(): boolean
+            +updateProgress(): boolean
+        }
+
+        class CommunityAPI {
+            +saveForumPost(): boolean
+            +updateForumPost(): boolean
+        }
+
+        class NotificationAPI {
+            +saveNotification(): boolean
+            +deleteNotification(): boolean
+        }
+    }
+}
+
+package "Business Logic Layer" {
+    package "User Module" {
+        class UserBusinessLogic {
+            +validateUserInput(): boolean
+            +createUserAccount(): boolean
+            +loginUser(): boolean
+            +logoutUser(): void
+            +saveuserInfo(): boolean
+        }
+    }
+
+    package "Course Module" {
+        class CourseBusinessLogic {
+            +validateCourseInput(): boolean
+            +createCourse(): boolean
+            +saveCourseInfo(): boolean
+            +createQuiz(): void
+            +saveQuiz(): boolean
+        }
+    }
+
+    package "Recommendation Module" {
+        class RecommendationBusinessLogic {
+            +createLearningPlan(): boolean
+            +saveLearningPlan(): boolean
+            +updateLearningPlan(): boolean
+        }
+    }
+
+    package "Progress Module" {
+        class ProgressBusinessLogic {
+            +saveProgress(): boolean
+            +updateProgress(): boolean
+        }
+    }
+
+    package "Community Module" {
+        class CommunityBusinessLogic {
+            +saveForumPost(): boolean
+            +updateForumPost(): boolean
+        }
+    }
+
+    package "Notification Module" {
+        class NotificationBusinessLogic {
+            +saveNotification(): boolean
+            +deleteNotification(): boolean
+        }
+    }
+}
+
+package "Presentation Layer" {
+    package "Web API" {
+        note "Handles user API logic" as N1 <<api>>
+        UserAPI ..> N1
+        note "Handles course API logic" as N2 <<api>>
+        CourseAPI ..> N2
+        note "Handles recommendation API logic" as N3 <<api>>
+        RecommendationAPI ..> N3
+        note "Handles progress API logic" as N4 <<api>>
+        ProgressAPI ..> N4
+        note "Handles community API logic" as N5 <<api>>
+        CommunityAPI ..> N5
+        note "Handles notification API logic" as N6 <<api>>
+        NotificationAPI ..> N6
+    }
+}
+
+UserAPI --> CourseAPI
+CourseAPI --> RecommendationAPI
+RecommendationAPI --> ProgressAPI
+ProgressAPI --> CommunityAPI
+CommunityAPI --> NotificationAPI
+
+@enduml
+```
+@enduml

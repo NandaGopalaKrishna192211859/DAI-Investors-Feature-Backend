@@ -1,0 +1,132 @@
+@startuml
+package Presentation { 
+  interface "User Interface" as UI
+  interface "API Endpoints for Client Interactions" as API
+}
+
+package Application {
+  class UserService {
+    - userId
+    - userPassword
+    - isActive
+    - registrationDate
+
+    + registerUser()
+    + loginUser()
+    + deleteUser()
+    + updateUser()
+  }
+
+  class PaymentService {
+    - paymentMethod
+    - paymentStatus
+    - transactionId
+    - paymentDate
+
+    + processOnlinePayment()
+    + processOfflinePayment()
+    + cancelPayment()
+    + updatePaymentStatus()
+  }
+
+  class NotificationService {
+    - notificationType
+    - notificationStatus
+    - recipient
+    - sendDate
+
+    + sendPushNotification()
+    + sendEmailNotification()
+    + cancelNotification()
+    + updateNotificationStatus()
+  }
+
+  class RideService {
+    - rideStatus
+    - rideLocation
+    - rideTime
+    - userId
+
+    + trackRideStatus()
+    + trackRideNavigation()
+    + cancelRide()
+    + updateRideStatus()
+  }
+}
+
+package Service {
+  class DataServ {
+    - dataId
+    - dataName
+    - dataType
+    - dataDate
+
+    + retrieveData()
+    + insertData()
+    + updateData()
+    + deleteData()
+  }
+
+  class BikeService {
+    - bikeId
+    - bikeName
+    - bikeType
+    - bikeAvailability
+
+    + manageBikeList()
+    + checkBikeAvailability()
+    + updateBikeStatus()
+    + cancelBikeReservation()
+  }
+}
+
+package DataAccess {
+  class DatabaseRepo {
+    - repoId
+    - repoName
+    - repoType
+    - repoLastUpdate
+
+    + interactWithDatabase()
+    + retrieveData()
+    + insertData()
+    + updateData()
+  }
+}
+
+package Database {
+  abstract class BaseDatabase {}
+  class MySQLDatabase extends BaseDatabase {
+    - dbId
+    - dbName
+    - dbType
+    - dbLastUpdate
+
+    + connectToDatabase()
+    + disconnectFromDatabase()
+    + executeQuery()
+    + fetchQueryResult()
+  }
+}
+
+Presentation --+> UserService : depends_on
+Presentation --+> PaymentService : depends_on
+Presentation --+> NotificationService : depends_on
+Presentation --+> RideService : depends_on
+Presentation --+> API : depends_on
+
+User --* UserService : uses
+Payment --* PaymentService : uses
+Notification --* NotificationService : uses
+Ride --* RideService : uses
+Data --* DataServ : uses
+Bike --* BikeService : uses
+
+Service --+> DataServ : depends_on
+Service --+> BikeService : depends_on
+DataServ --* DatabaseRepo : uses
+BikeService --* DatabaseRepo : uses
+DatabaseRepo --* MySQLDatabase : uses
+
+DatabaseRepo --* MySQLDatabase : uses
+@enduml

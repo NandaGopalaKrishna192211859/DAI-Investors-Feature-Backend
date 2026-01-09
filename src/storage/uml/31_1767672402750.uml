@@ -1,0 +1,107 @@
+@startuml
+package Presentation {
+    class BikeListingController {
+        +bikeListingId: int
+        +bikeName: string
+        +bikeDescription: string
+        +bikeImagePath: string
+        +displayBikeListing(): void
+        +updateBikeListing(): void
+        +deleteBikeListing(): void
+        +displayRideTracking(): void
+    }
+    class RideTrackingController {
+        +rideTrackingId: int
+        +rideStart: datetime
+        +rideEnd: datetime
+        +bikeName: string
+        +displayRideTracking(): void
+        +updateRideTracking(): void
+        +deleteRideTracking(): void
+        +trackRide(): void
+    }
+}
+
+package BusinessLogic {
+    package BikeService {
+        class BikeService {
+            +bikeServiceId: int
+            +bikeName: string
+            +bikeDescription: string
+            +monthlyFees: decimal
+            +calculateBikeFees(): decimal
+            +updateBikePrices(): void
+            +displayBikeInventory(): void
+        }
+    }
+    package PaymentService {
+        class PaymentService {
+            +paymentServiceId: int
+            +paymentGateway: string
+            +monthlyTransactionFees: decimal
+            +processPayment(): void
+            +updatePaymentStatus(): void
+            +calculatePaymentFees(): decimal
+        }
+    }
+    package RideService {
+        class RideService {
+            +rideServiceId: int
+            +rideStart: datetime
+            +rideEnd: datetime
+            +distanceTravelled: int
+            +calculateRideFees(): decimal
+            +trackRideDetails(): void
+            +displayRideHistory(): void
+        }
+    }
+    package NotificationService {
+        class NotificationService {
+            +notificationServiceId: int
+            +notificationType: string
+            +notificationStatus: bool
+            +sendPushNotification(): void
+            +sendEmailNotification(): void
+        }
+    }
+}
+
+package DataAccess {
+    class DatabaseAccess {
+        +databaseId: int
+        +databaseName: string
+        +tableName: string
+        +insertBikeListing(): void
+        +updateBikeListing(): void
+        +deleteBikeListing(): void
+        +insertRideTracking(): void
+    }
+    class PaymentGatewayAccess {
+        +paymentGatewayId: int
+        +paymentGatewayName: string
+        +paymentMethod: string
+        +processPayment(): void
+        +updatePaymentStatus(): void
+    }
+}
+
+package Infrastructure {
+    class LoginService {
+        +loginId: int
+        +username: string
+        +password: string
+        +registerUser(): void
+        +loginUser(): void
+        +logoutUser(): void
+    }
+    class UtilityService {
+        +utilityServiceId: int
+        +utilityTaskName: string
+        +utilityTaskDescription: string
+        +performUtilityTask(): void
+        +errorHanlding(): void
+        +logUtilityTask(): void
+    }
+}
+
+@enduml

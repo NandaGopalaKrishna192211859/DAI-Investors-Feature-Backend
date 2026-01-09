@@ -1,0 +1,233 @@
+@startuml
+    package UserModule {
+        class User {
+            +username
+            +email
+            +password
+            +profile_picture
+            -login()
+            +register()
+            -update_profile()
+            +view_profile()
+        }
+        class UserProfile {
+            +id
+            +address
+            +phone_number
+            +payment_info
+            -updateUserProfile()
+            +getUserName()
+            +getUserEmail()
+            +getUserProfilePicture()
+        }
+    }
+    package BikeModule {
+        class Bike {
+            +id
+            +brand
+            +model
+            +rental_history
+            -create_bike()
+            +view_bike()
+            -edit_bike()
+            +remove_bike()
+        }
+        class BikeOwner {
+            +id
+            +name
+            +email
+            +username
+            -add_bike()
+            +view_rentals()
+            -remove_rental()
+            +update_bike_listing()
+        }
+    }
+    package RideModule {
+        class Ride {
+            +id
+            +start_time
+            +end_time
+            +location
+            -start_ride()
+            +track_ride()
+            -end_ride()
+            +cancel_ride()
+        }
+        class RideTracker {
+            +id
+            +ride_id
+            +tracker_status
+            -getRideDetails()
+            +getTrackerStatus()
+            -updateTracker()
+            +deleteTracker()
+        }
+    }
+    package PaymentModule {
+        class Payment {
+            +id
+            +user_id
+            +amount
+            +timestamp
+            -make_payment()
+            +view_payments()
+            -cancel_payment()
+            +update_payment_status()
+        }
+        class PaymentGateway {
+            +id
+            +name
+            +api_key
+            -make_payment()
+            +get_payment_status()
+            -cancel_payment()
+            +update_payment()
+        }
+    }
+    package DeliveryModule {
+        class Delivery {
+            +id
+            +user_id
+            +bike_id
+            +driver_id
+            -assign_driver()
+            +track_delivery()
+            -update_delivery_status()
+            +cancel_delivery()
+        }
+        class DeliveryDriver {
+            +id
+            +name
+            +phone_number
+            +vehicle_info
+            -accept_delivery()
+            +view_assignments()
+            -update_status()
+            +cancel_delivery()
+        }
+    }
+    package NotificationModule {
+        class Notification {
+            +id
+            +user_id
+            +message
+            +timestamp
+            -send_notification()
+            +view_notifications()
+            -update_notification()
+            +delete_notification()
+        }
+        class PushNotification {
+            +id
+            +device_token
+            +message
+            -send_push()
+            +view_push_logs()
+            -update_push()
+            +cancel_push()
+        }
+    }
+    package AdministrationModule {
+        class Admin {
+            +id
+            +name
+            +email
+            +role
+            -view_analytics()
+            +manage_settings()
+            -update_sys_config()
+            +view_user_management()
+        }
+        class AdminSettings {
+            +id
+            +setting_name
+            +setting_value
+            -update_setting()
+            +view_settings()
+            -delete_setting()
+            +save_new_setting()
+        }
+    }
+    package UserFriendlySearchEngine {
+        class Search {
+            +query
+            +results
+            -search_bikes()
+            +sort_results()
+            -filter_distance()
+            +filter_bike_type()
+        }
+        class SearchFilter {
+            +id
+            +filter_name
+            +filter_value
+            -apply_filter()
+            +view_filters()
+            -update_filter()
+            +remove_filter()
+        }
+    }
+    package LiveRideTrackingAndNavigation {
+        class GPS {
+            +id
+            +GPS_status
+            +location
+            -start_tracking()
+            +getGPS_status()
+            -stop_tracking()
+            +update_location()
+        }
+        class RideNavigator {
+            +id
+            +ride_id
+            +navigator_status
+            -navigate()
+            +getNavigator_status()
+            -update_navigator()
+            +delete_navigator()
+        }
+    }
+    package DigitalPayments {
+        class PaymentMethod {
+            +id
+            +payment_name
+            +payment_type
+            -make_payment()
+            +view_payment_history()
+            -update_payment_method()
+            +remove_payment_method()
+        }
+        class AutoPayment {
+            +id
+            +user_id
+            +bike_id
+            +payment_method_id
+            -schedule_payment()
+            +cancel_payment()
+            -update_auto_payment()
+            +view_auto_payment_history()
+        }
+    }
+    package DeliveryServices {
+        class DeliveryEmployee {
+            +id
+            +name
+            +vehicle_info
+            -assign_delivery()
+            +view_assignments()
+            -update_status()
+            +cancel_delivery()
+        }
+        class DeliveryRoute {
+            +id
+            +bike_id
+            +user_id
+            +driver_id
+            -create_route()
+            +track_route()
+            -update_route_status()
+            +cancel_route()
+        }
+    }
+@enduml

@@ -1,0 +1,101 @@
+@startuml
+Here is the final PlantUML diagram:
+
+```plantuml
+@startuml
+
+package UserModule {
+    class User {
+        +id: int
+        +username: string
+        +email: string
+        +password: string
+        +phoneNumber: string
+
+        +register(): void
+        +login(): void
+        +getProfile(): string
+        +updateProfile(): void
+    }
+}
+
+note "Handles user API logic" as N1 <<api>>
+User .. N1
+
+package BikeModule {
+    class Bike {
+        +id: int
+        +bikeId: string
+        +type: string
+        +condition: string
+        +speedLimits: float
+        +availability: boolean
+
+        +searchBikes(): void
+        +bookBike(): void
+        +getBikeInfo(): string
+        +updateBikeAvailability(): void
+    }
+}
+
+N1 --> BikeModule
+
+package StationModule {
+    class Station {
+        +id: int
+        +name: string
+        +location: string
+        +maintenanceSchedule: string
+
+        +getStationInfo(): string
+        +scheduleMaintenance(): void
+        +updateMaintenanceSchedule(): void
+        +addBikeToStation(): void
+    }
+}
+
+BikeModule --> StationModule
+
+package OrderModule {
+    class Order {
+        +id: int
+        +rideId: int
+        +startTime: string
+        +endTime: string
+        +cost: float
+        +distance: float
+        +bikeId: int
+
+        +createOrder(): void
+        +getOrderHistory(): string
+        +updateOrderStatus(): void
+        +cancelOrder(): void
+    }
+}
+
+BikeModule --> OrderModule
+
+package PushNotificationModule {
+    class PushNotification {
+        +sendRideEndNotification(): void
+        +sendMaintenanceAlert(): void
+        +sendBikeAvailabilityUpdate(): void
+    }
+}
+
+OrderModule --> PushNotificationModule
+
+package ReportingModule {
+    class Report {
+        +getUserFeedback(): void
+        +getBikeMaintenanceHistory(): void
+    }
+}
+
+OrderModule --> ReportingModule
+
+@enduml
+```
+
+This diagram represents a layered architecture with five packages: UserModule, BikeModule, StationModule, OrderModule, PushNotificationModule, and ReportingModule. Each package has four classes, and the class relationships are shown using the `-->` and `..>` arrows. The notes with stereotype `<<api>>` are attached to the classes and show which APIs are handled by the classes.
+@enduml

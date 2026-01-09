@@ -1,0 +1,186 @@
+@startuml
+Here's a PlantUML class diagram based on the provided specifications:
+
+```plantuml
+@startuml
+
+package UserManagement {
+    class User {
+        +id: int
+        +email: string
+        +password_hash: string
+        +salt_value: string
+        +phone_number: string
+
+        +verify_email(): boolean
+        +update_password(): void
+        +generate_access_token(): string
+        +validate_request(): boolean
+    }
+
+    class RecipientContact {
+        +id: int
+        +recipient_id: int
+        +public_key: string
+        +private_key: string
+
+        +generate_encryption_key(): string
+        +decrypt_message(): string
+        +update_recipient_contact(): void
+        +get_public_key(): string
+    }
+}
+
+package CommunicationLayer {
+    class Messenger {
+        +id: int
+        +sender_id: int
+        +recipient_id: int
+        +message: string
+        +created_at: timestamp
+        +updated_at: timestamp
+
+        +send_message(): void
+        +receive_message(): void
+        +encrypt_message(): string
+        +decrypt_message(): string
+    }
+
+    class Sender {
+        +id: int
+        +public_key: string
+        +private_key: string
+
+        +send_message_to_all(): void
+        +send_private_message(): void
+        +update_sender(): void
+        +get_access_token(): string
+    }
+
+    class Message {
+        +id: int
+        +message_text: string
+        +type: string
+
+        +send_message_to_db(): void
+        +get_message_from_db(): string
+        +send_message_to_all(): void
+        +validate_message_type(): void
+    }
+}
+
+package CoreServices {
+    class EncryptionService {
+        +encrypt_message(): string
+        +decrypt_message(): string
+
+        +create_encryption_key(): string
+        +update_encryption_key(): void
+        +validate_key_pair(): void
+    }
+
+    class AuthenticationService {
+        +verify_credentials(): void
+        +generate_access_token(): string
+        +validate_request(): boolean
+
+        +update_user_credentials(): void
+        +validate_user_credentials(): void
+        +update_access_token(): void
+    }
+
+    class InterfaceService {
+        +create_interface(): void
+        +update_interface(): void
+        +get_interface(): string
+
+        +authenticate_user(): void
+        +display_user_info(): void
+        +send_request_to_db(): void
+    }
+}
+
+package DataLayer {
+    class Database {
+        +create_user_db_entry(): void
+        +get_user_db_entry(): string
+
+        +get_message_db_entry(): string
+        +get_sent_messages(): string
+
+        +update_message_db_entry(): void
+        +delete_message_db_entry(): void
+    }
+}
+
+package BillingModule {
+    class BillingService {
+        +create_invoice(): void
+        +get_invoice(): string
+
+        +update_billing_info(): void
+        +validate_billing_info(): boolean
+
+        +get_paid_amounts(): string
+        +get_paid_statuses(): boolean
+    }
+}
+
+package EncryptionModule {
+    class AESCryptograph {
+        +encrypt_message(): string
+        +decrypt_message(): string
+
+        +update_encryption_key(): void
+        +validate_key_pair(): void
+    }
+
+    class RSAEncryptor {
+        +encrypt_message(): string
+        +decrypt_message(): string
+
+        +create_key_pair(): void
+        +update_key_pair(): void
+        +validate_key_pair(): void
+    }
+}
+
+package InterfaceModule {
+    class UserInterface {
+        +render_user_info(): void
+        +display_menu(): void
+        +handle_menu_choice(): void
+
+        +send_request_to_db(): void
+        +validate_request_data(): void
+        +update_user_display(): void
+    }
+}
+
+note "Handles user API logic" as N1 <<api>>
+User .. N1
+
+UserManagement\User --> CommunicationLayer\Messenger
+CommunicationLayer\Sender --> CommunicationLayer\Sender
+
+CommunicationLayer\Message ..> CommunicationLayer\Message
+
+CoreServices\AuthenticationService --> CoreServices\EncryptionService
+CoreServices\EncryptionService --> EncryptionModule\AESCryptograph
+EncryptionModule\AESCryptograph --> EncryptionModule\RSAEncryptor
+
+DataLayer\Database --> EncryptionModule\AESCryptograph
+CommunicationLayer\Messenger --> DataLayer\Database
+
+EncryptionModule\AESCryptograph --> BillingModule\BillingService
+EncryptionModule\RSAEncryptor --> InterfaceModule\UserInterface
+
+InterfaceModule\UserInterface ..> BillingModule\BillingService
+
+@enduml
+```
+
+This PlantUML diagram represents the low-level design for a secure communication platform. It includes packages and classes that implement features like user authentication, encryption, and message communication. Each class has attributes and methods that are specific to its functionality.
+
+The relationship arrows indicate data flow between classes and services. The diagram also includes notes with API stereotypes to highlight interactions with external APIs. The overall design ensures that data flows in a secure manner and provides users with a seamless experience.
+@enduml

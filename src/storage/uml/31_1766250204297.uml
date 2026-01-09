@@ -1,0 +1,175 @@
+@startuml
+Here's the PlantUML class diagram for the Smart Bike Rental App:
+
+```plantuml
+@startuml
+
+package UserManagement {
+    class UserReg {
+        +id: int
+        +name: string
+        +email: string
+        +password: string
+
+        +register(): void
+        +login(): boolean
+        +getProfile(): string
+        +saveFavouriteBike(): void
+    }
+    class UserAuth {
+        +validateUser(): boolean
+        +createNewAccount(): void
+        +sendConfirmationEmail(): void
+    }
+    class UserProfile {
+        +viewProfile(): string
+        +updateProfile(): void
+    }
+    note "API note for User Management" as N1 <<api>> "Handles user registration and profile management"
+    UserReg .. N1
+    UserAuth ..> UserProfile
+}
+
+package BikeInventory {
+    class Bike {
+        +id: int
+        +bikeNumber: string
+        +bikeType: string
+        +availability: string
+        +rentalPrice: float
+
+        +searchBike(): void
+        +rentBike(): void
+        +returnBike(): void
+        +updateAvailability(): void
+    }
+    class BikeService {
+        +createNewBike(): void
+        +updateBikeInfo(): void
+    }
+    class BikeStatus {
+        +viewBikeStatus(): string
+        +updateBikeStatus(): void
+    }
+    note "API note for Bike Inventory" as N2 <<api>> "Manages bike inventory and rental information"
+    Bike ..> BikeService
+    BikeStatus ..> Bike
+}
+
+package RentalServices {
+    class RentalProcess {
+        +createNewRental(): void
+        +updateRentalInfo(): void
+        +cancelRental(): void
+        +refundMechanical(): void
+    }
+    class RideTracking {
+        +trackRide(): void
+        +viewRideHistory(): string
+    }
+    class RentalStatus {
+        +viewRentalStatus(): string
+        +updateRentalStatus(): void
+    }
+    note "API note for Rental Services" as N3 <<api>> "Manages bike rental and return processes"
+    RentalProcess ..> RideTracking
+    RentalStatus ..> RentalProcess
+}
+
+package PaymentGateway {
+    class Payment {
+        +processPayment(): void
+        +updatePaymentStatus(): void
+        +refundPayment(): void
+        +viewPaymentHistory(): string
+    }
+    class PaymentService {
+        +validatePaymentInfo(): boolean
+        +createNewPayment(): void
+    }
+    class PaymentStatus {
+        +viewPaymentStatus(): string
+        +updatePaymentStatus(): void
+    }
+    note "API note for Payment Gateway" as N4 <<api>> "Manages digital payments and refunds"
+    Payment ..> PaymentService
+    PaymentStatus ..> Payment
+}
+
+package AdminDashboard {
+    class Admin {
+        +viewRentalData(): string
+        +updateRentalData(): void
+        +viewPaymentData(): string
+        +updatePaymentData(): void
+    }
+    class AdminService {
+        +validateAdminAccess(): boolean
+        +createNewAdmin(): void
+    }
+    class AdminStatus {
+        +viewAdminStatus(): string
+        +updateAdminStatus(): void
+    }
+    note "API note for Admin Dashboard" as N5 <<api>> "Provides city administrators with dashboard features"
+    Admin ..> AdminService
+    AdminStatus ..> Admin
+}
+
+package PushNotificationService {
+    class PushNotification {
+        +sendNotification(): void
+        +updateNotificationStatus(): void
+        +viewNotificationHistory(): string
+    }
+    class PushNotificationService {
+        +validatePushNotification(): boolean
+        +createNewNotification(): void
+    }
+    class PushNotificationStatus {
+        +viewPushNotificationStatus(): string
+        +updatePushNotificationStatus(): void
+    }
+    note "API note for Push Notification Service" as N6 <<api>> "Sends push notifications for ride end alerts and maintenance updates"
+    PushNotification ..> PushNotificationService
+    PushNotificationStatus ..> PushNotification
+}
+
+package SupportTickets {
+    class SupportTicket {
+        +createNewTicket(): void
+        +assignTicket(): void
+        +updateTicketStatus(): void
+        +viewTicketHistory(): string
+    }
+    class SupportService {
+        +validateSupportTicket(): boolean
+        +createNewSupportTicket(): void
+    }
+    class SupportStatus {
+        +viewSupportStatus(): string
+        +updateSupportStatus(): void
+    }
+    note "API note for Support Tickets" as N7 <<api>> "Allows users to report bike damage and engage with support"
+    SupportTicket ..> SupportService
+    SupportStatus ..> SupportTicket
+}
+
+Class UserReg --> Class UserAuth
+Class UserAuth --> Class UserProfile
+Class Bike --> Class BikeService
+Class BikeService --> Class BikeStatus
+Class RentalProcess --> Class RideTracking
+Class RideTracking --> Class RentalStatus
+Class Payment --> Class PaymentService
+Class PaymentService --> Class PaymentStatus
+Class Admin --> Class AdminService
+Class AdminService --> Class AdminStatus
+Class PushNotification --> Class PushNotificationService
+Class PushNotificationService --> Class PushNotificationStatus
+Class SupportTicket --> Class SupportService
+Class SupportService --> Class SupportStatus
+
+@enduml
+```
+@enduml

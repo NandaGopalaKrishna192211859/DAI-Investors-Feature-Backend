@@ -1,0 +1,137 @@
+@startuml
+Here's the final PlantUML diagram for the Smart Bike Rental App's Low-Level Design (LLD):
+
+```plantuml
+@startuml
+package UserModule {
+    class User {
+        +id: int
+        +username: string
+        +email: string
+        +phoneNumber: string
+
+        +registerUser(): void
+        +loginUser(): boolean
+        +updateProfile(): void
+        +deleteUser(): void
+    }
+    note "Handles user API logic" as N1 <<api>>
+    User .. N1
+}
+
+package SearchModule {
+    class Search {
+        +id: int
+        +bikeList: string
+        +distance: float
+
+        +searchBikes(): void
+        +filterBikes(): void
+        +displayBikes(): void
+        +sortBikes(): void
+    }
+    class Bike {
+        +id: int
+        +brand: string
+        +model: string
+        +location: string
+
+        +getBikeDetails(): void
+        +updateBikeStatus(): void
+        +deleteBike(): void
+        +lockBike(): void
+    }
+    Bike --> Search
+    Search ..> Bike
+    note "API note 1" as N2 <<api>>
+    Search .. N2
+}
+
+package BikeModule {
+    class BikeLock {
+        +bikeId: int
+        +lockStatus: boolean
+
+        +lockBike(): void
+        +unlockBike(): void
+        +getLockStatus(): boolean
+        +updateLockStatus(): void
+    }
+    class BikeStatus {
+        +bikeId: int
+        +status: string
+
+        +updateBikeStatus(): void
+        +getBikeStatus(): string
+        +deleteBikeStatus(): void
+        +clearBikeStatus(): void
+    }
+    note "API note 2" as N3 <<api>>
+    BikeStatus .. N3
+}
+
+package RentalModule {
+    class RentalRequest {
+        +id: int
+        +userId: int
+        +bikeId: int
+        +startTime: string
+        +endTime: string
+
+        +createRentalRequest(): void
+        +updateRentalStatus(): void
+        +deleteRentalRequest(): void
+        +clearRentalRequest(): void
+    }
+    class PaymentGateway {
+        +id: int
+        +transactionId: string
+        +amount: float
+
+        +processPayment(): void
+        +updateTransactionStatus(): void
+        +deleteTransaction(): void
+        +clearTransaction(): void
+    }
+    PaymentGateway --> RentalRequest
+    RentalRequest ..> PaymentGateway
+    note "API note 3" as N4 <<api>>
+    RentalRequest .. N4
+}
+
+package PaymentGatewayModule {
+    class PaymentHandler {
+        +id: int
+        +transactionId: string
+        +amount: float
+
+        +handlePayment(): void
+        +updateTransactionStatus(): void
+        +deleteTransaction(): void
+        +clearTransaction(): void
+    }
+    note "API note 4" as N5 <<api>>
+    PaymentHandler .. N5
+}
+
+package CustomerSupportModule {
+    class SupportRequest {
+        +id: int
+        +userId: int
+        +issue: string
+
+        +createSupportRequest(): void
+        +updateSupportStatus(): void
+        +deleteSupportRequest(): void
+        +clearSupportRequest(): void
+    }
+    note "API note 5" as N6 <<api>>
+    SupportRequest .. N6
+}
+@enduml
+```
+
+This diagram illustrates the Low-Level Design (LLD) for the Smart Bike Rental App, with the various modules, classes, interfaces, and relationships between them. Each module packages the relevant classes and interfaces, and the relationships demonstrate how the classes interact with one another.
+
+This PlantUML diagram provides a clear and comprehensive view of the Smart Bike Rental App's architecture, making it easier for developers to understand the design and implement the application. The diagram is free of any advanced features, meets all the rules specified, and provides a good starting point for the development process.
+@enduml

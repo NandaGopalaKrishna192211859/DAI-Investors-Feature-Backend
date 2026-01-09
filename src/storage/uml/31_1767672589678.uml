@@ -1,0 +1,165 @@
+@startuml
+package login_module {
+  class RegisterUser {
+  + userId: String
+  + userPassword: String
+  + email: String
+  + userRole: String
+  + registerUser(): void
+  + isValidUser(): boolean
+  + saveToDatabase(): void
+  + checkUserExists(): boolean
+ }
+
+ class LoginUser {
+  + userId: String
+  + userPassword: String
+  + email: String
+  + userRole: String
+  + loginUser(): void
+  + authenticateUser(): boolean
+  + loginFailed(): void
+  + checkUserAvailable(): boolean
+ }
+
+ class ProcessPayment {
+  + transactionId: Integer
+  + amount: Float
+  + paymentMethod: String
+  + paymentStatus: String
+  + processPayment(): void
+  + verifyPayment(): boolean
+  + paymentFailed(): void
+  + getPaymentStatus(): boolean
+ }
+}
+
+package database_management {
+  class StoreUser {
+  + userId: String
+  + userName: String
+  + email: String
+  + password: String
+  + storeUser(): void
+  + getUser(): User
+  + deleteUser(): void
+  + updateUser(): void
+  }
+
+  class StoreBike {
+  + bikeId: Integer
+  + bikeName: String
+  + bikeDescription: String
+  + bikePrice: Float
+  + storeBike(): void
+  + getBike(): Bike
+  + deleteBike(): void
+  + updateBike(): void
+  }
+
+  class GetBikeAvailability {
+  + bikeId: Integer
+  + availability: Integer
+  + getAvailability(): Integer
+  + updateAvailability(): void
+  + checkAvailability(): boolean
+  }
+}
+
+package bike_listings {
+  class GetBikeAvailability {
+  + bikeId: Integer
+  + availability: Integer
+  + getAvailability(): Integer
+  + updateAvailability(): void
+  + checkAvailability(): boolean
+  }
+
+  class BookBike {
+  + bookingId: Integer
+  + userId: String
+  + bikeId: Integer
+  + bookingStatus: String
+  + bookBike(): void
+  + cancelBooking(): void
+  + checkBookingStatus(): boolean
+  }
+
+  class CancelBooking {
+  + bookingId: Integer
+  + userId: String
+  + bikeId: Integer
+  + cancelBooking(): void
+  }
+}
+
+package payment_gateway {
+  class ProcessPayment {
+  + transactionId: Integer
+  + amount: Float
+  + paymentMethod: String
+  + paymentStatus: String
+  + processPayment(): void
+  + verifyPayment(): boolean
+  + paymentFailed(): void
+  }
+
+  class GetPaymentStatus {
+  + transactionId: Integer
+  + paymentStatus: String
+  + getPaymentStatus(): String
+  }
+}
+
+package notification_system {
+  class SendNotification {
+  + userId: String
+  + notificationMessage: String
+  + notificationType: String
+  + sendNotification(): void
+  + checkUserAvailable(): boolean
+  }
+
+  class GetNotificationPreferences {
+  + userId: String
+  + notificationPreference: String
+  + getNotificationPreference(): String
+  }
+}
+
+package ride_tracking {
+  class TrackBikeLocation {
+  + bikeId: Integer
+  + location: String
+  + trackLocation(): void
+  + checkLocation(): boolean
+  }
+
+  class GetBikeStatus {
+  + bikeId: Integer
+  + bikeStatus: String
+  + getBikeStatus(): String
+  }
+}
+
+login_module::RegisterUser ..> database_management::StoreUser
+login_module::LoginUser ..> login_module::RegisterUser
+login_module::ProcessPayment ..> payment_gateway::ProcessPayment
+login_module::ProcessPayment ..> database_management::StoreUser
+
+database_management::StoreUser ..> login_module::LoginUser
+database_management::StoreBike ..> bike_listings::GetBikeAvailability
+database_management::GetBikeAvailability ..> bike_listings::BookBike
+
+bike_listings::GetBikeAvailability ..> ride_tracking::TrackBikeLocation
+bike_listings::BookBike ..> ride_tracking::TrackBikeLocation
+bike_listings::CancelBooking ..> bike_listings::GetBikeAvailability
+
+payment_gateway::ProcessPayment ..> database_management::StoreUser
+payment_gateway::GetPaymentStatus ..> payment_gateway::ProcessPayment
+
+notification_system::SendNotification ..> bike_listings::GetBikeAvailability
+notification_system::GetNotificationPreferences ..> login_module::LoginUser
+ride_tracking::TrackBikeLocation ..> bike_listings::GetBikeAvailability
+ride_tracking::GetBikeStatus ..> bike_listings::GetBikeAvailability
+@enduml

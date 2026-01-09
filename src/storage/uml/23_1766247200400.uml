@@ -1,0 +1,146 @@
+@startuml
+Here is a PlantUML class diagram based on the provided low-level design:
+
+```plantuml
+@startuml
+package CoreServices {
+    class UserService {
+        +id: int
+        +email: string
+        +password: string
+        +name: string
+
+        +login(): boolean
+        +register(): void
+        +validatePassword(): boolean
+        +updateProfile(): void
+    }
+
+    class TaskService {
+        +id: int
+        +user_id: int
+        +title: string
+        +description: string
+        +priority: int
+        +due_date: int
+
+        +createTask(): void
+        +editTask(): void
+        +deleteTask(): void
+        +getTask(): string
+        +assignTask(): void
+    }
+
+    class GoalService {
+        +id: int
+        +user_id: int
+        +title: string
+        +description: string
+        +deadline: int
+
+        +createGoal(): void
+        +editGoal(): void
+        +deleteGoal(): void
+        +getGoal(): string
+        +trackProgress(): void
+    }
+
+    class WorkflowService {
+        +id: int
+        +user_id: int
+        +structure: string
+
+        +createWorkflow(): void
+        +editWorkflow(): void
+        +deleteWorkflow(): void
+        +assignTask(): void
+        +getWorkflow(): string
+    }
+}
+
+package TaskManagement {
+    class TaskManager {
+        +tasks: TaskService[]
+        +workflows: WorkflowService[]
+    }
+}
+
+package WorkflowManagement {
+    class WorkflowManager {
+        +workflows: WorkflowService[]
+        +tasks: TaskService[]
+    }
+}
+
+package ProgressTracking {
+    class ProgressTracker {
+        +user_id: int
+        +tasks: TaskService[]
+        +goals: GoalService[]
+    }
+}
+
+package Notification {
+    class NotificationService {
+        +users: UserService[]
+        +tasks: TaskService[]
+        +goals: GoalService[]
+        +reminders: string
+    }
+}
+
+package Motivation {
+    class MotivationService {
+        +content: string
+        +resources: string
+    }
+}
+
+package DataAnalysis {
+    class DataAnalyzer {
+        +usageData: string
+        +goalAchievementData: string
+    }
+}
+
+note "Authentication API note" as N1 <<api>>
+UserService ..> N1
+
+class UserService --> TaskService
+TaskService --- WorkflowService
+WorkflowService <-- TaskService
+
+note "Task API note" as N2 <<api>>
+TaskService ..> N2
+
+class WorkflowService --> GoalService
+GoalService <-- WorkflowService
+
+note "Goal API note" as N3 <<api>>
+GoalService ..> N3
+
+class ProgressTracker --> UserService
+UserService <-- ProgressTracker
+
+note "Progress API note" as N4 <<api>>
+ProgressTracker ..> N4
+
+class NotificationService --> UserService
+UserService <-- NotificationService
+
+note "Notification API note" as N5 <<api>>
+NotificationService ..> N5
+
+class MotivationService --> UserService
+UserService <-- MotivationService
+
+note "Motivation API note" as N6 <<api>>
+MotivationService ..> N6
+
+class DataAnalyzer --> ProgressTracker
+ProgressTracker <-- DataAnalyzer
+@enduml
+```
+
+This diagram depicts the classes and relationships based on the provided low-level design. Each package represents a module, and the classes within each package represent the relevant services. The relationships between packages and classes represent the interactions between services. The notes with the <<api>> stereotype represent the APIs that interact with the services.
+@enduml

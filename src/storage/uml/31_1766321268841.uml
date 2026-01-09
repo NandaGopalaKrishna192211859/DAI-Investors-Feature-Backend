@@ -1,0 +1,172 @@
+@startuml
+Here is the PlantUML code for the Smart Bike Rental App Low-Level Design:
+
+```plantuml
+@startuml
+
+package "User Management" {
+    class User {
+        +id: int
+        +username: string
+        +email: string
+        +password: string
+
+        +register(): void
+        +login(): void
+        +getProfile(): string
+        +updateSettings(): void
+    }
+
+    note "Handles user API logic" as N1 <<api>>
+    User .. N1
+}
+
+package "User Management" {
+    class UserManager {
+        +saveUser(): void
+        +getUser(id: int): string
+        +updateUser(id: int, user: string): void
+        +deleteUser(id: int): void
+    }
+}
+
+package "Bike Management" {
+    class Bike {
+        +id: int
+        +bikeType: string
+        +bikeName: string
+        +bikeLocation: string
+
+        +list(): void
+        +edit(id: int, bike: string): void
+        +remove(id: int): void
+        +getBikeDetails(id: int): string
+    }
+
+    note "Handles bike API logic" as N2 <<api>>
+    Bike .. N2
+}
+
+package "Bike Management" {
+    class BikeManager {
+        +saveBike(): void
+        +getBike(id: int): string
+        +updateBike(id: int, bike: string): void
+        +deleteBike(id: int): void
+    }
+}
+
+package "Ride Management" {
+    class Ride {
+        +id: int
+        +rideStartTime: string
+        +rideEndTime: string
+        +rideDistance: float
+
+        +startRide(): void
+        +endRide(): void
+        +updateRideStatus(): void
+        +getRideHistory(): string
+    }
+
+    note "Handles ride API logic" as N3 <<api>>
+    Ride .. N3
+}
+
+package "Ride Management" {
+    class RideManager {
+        +saveRide(): void
+        +getRide(id: int): string
+        +updateRide(id: int, ride: string): void
+        +deleteRide(id: int): void
+    }
+}
+
+package "Payment Management" {
+    class Payment {
+        +id: int
+        +paymentType: string
+        +paymentStatus: string
+        +paymentAmount: string
+
+        +makePayment(): void
+        +refundPayment(): void
+        +checkPaymentStatus(): void
+        +updatePaymentStatus(): void
+    }
+
+    note "Handles payment API logic" as N4 <<api>>
+    Payment .. N4
+}
+
+package "Payment Management" {
+    class PaymentManager {
+        +savePayment(): void
+        +getPayment(id: int): string
+        +updatePayment(id: int, payment: string): void
+        +deletePayment(id: int): void
+    }
+}
+
+package "Notification Management" {
+    class Notification {
+        +id: int
+        +notificationType: string
+        +notificationMessage: string
+        +notificationTime: string
+
+        +sendNotification(): void
+        +cancelNotification(): void
+        +updateNotificationStatus(): void
+        +getNotificationHistory(): string
+    }
+
+    note "Handles notification API logic" as N5 <<api>>
+    Notification .. N5
+}
+
+package "Notification Management" {
+    class NotificationManager {
+        +saveNotification(): void
+        +getNotification(id: int): string
+        +updateNotification(id: int, notification: string): void
+        +deleteNotification(id: int): void
+    }
+}
+
+package "Administration" {
+    class Administrator {
+        +id: int
+        +username: string
+        +email: string
+        +password: string
+
+        +login(): void
+        +manageSystem(): void
+        +viewAnalytics(): void
+        +addNewBike(): void
+        +removeBike(): void
+    }
+
+    note "Handles admin API logic" as N6 <<api>>
+    Administrator .. N6
+}
+
+package "Core Services" {
+    User --> UserManager
+    Bike --> BikeManager
+    Ride --> RideManager
+    Payment --> PaymentManager
+    Notification --> NotificationManager
+
+    UserManager -- PaymentManager
+    BikeManager -- RideManager
+    RideManager -- PaymentManager
+    PaymentManager -- NotificationManager
+}
+
+@enduml
+```
+
+This PlantUML code represents the Smart Bike Rental App Low-Level Design, with each module (User Management, Bike Management, Ride Management, Payment Management, Notification Management, and Administration) represented as a package. Each class within a package represents a key entity and is connected to other classes through relationships. Notes with the <<api>> stereotype are used to highlight the API logic for each class. The relationships between classes represent the interactions between different modules and services within the app.
+@enduml

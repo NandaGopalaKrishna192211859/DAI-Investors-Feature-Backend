@@ -1,0 +1,127 @@
+@startuml
+package Database {
+  entity Users {
+    - id: int
+    - name: String
+    - email: String
+    - password: String
+    - phoneNumber: String
+    - profilePicture: String
+    - latitude: double
+    - longitude: double
+    + __construct()
+    + getId(): int
+    + getName(): String
+    + getEmail(): String
+    + getPassword(): String
+    + getPhoneNumber(): String
+    + getProfilePicture(): String
+    + getLatitude(): double
+    + getLongitude(): double
+  }
+  entity Bikes {
+    - id: int
+    - bikeType: String
+    - bikeModel: String
+    - bikeDescription: String
+    - bikeAvailability: String
+    - latitude: double
+    - longitude: double
+    + __construct()
+    + getId(): int
+    + getBikeType(): String
+    + getBikeModel(): String
+    + getBikeDescription(): String
+    + getBikeAvailability(): String
+    + getLatitude(): double
+    + getLongitude(): double
+  }
+  entity Rides {
+    - id: int
+    - userId: Users
+    - bikeId: Bikes
+    - startTime: String
+    - endTime: String
+    - fare: double
+    - status: String
+    + __construct()
+    + getId(): int
+    + getUserId(): Users
+    + getBikeId(): Bikes
+    + getStartTime(): String
+    + getEndTime(): String
+    + getFare(): double
+    + getStatus(): String
+  }
+  entity Deliveries {
+    - id: int
+    - userId: Users
+    - employeeId: Employee
+    - status: String
+    + __construct()
+    + getId(): int
+    + getUserId(): Users
+    + getEmployeeId(): Employee
+    + getStatus(): String
+  }
+  entity Payments {
+    - id: int
+    - userId: Users
+    - paymentMode: String
+    - paymentAmount: double
+    - paymentStatus: String
+    + __construct()
+    + getId(): int
+    + getUserId(): Users
+    + getPaymentMode(): String
+    + getPaymentAmount(): double
+    + getPaymentStatus(): String
+  }
+  entity Employee {
+    - id: int
+    - name: String
+    - email: String
+    - phoneNumber: String
+    + __construct()
+    + getId(): int
+    + getName(): String
+    + getEmail(): String
+    + getPhoneNumber(): String
+  }
+}
+
+package API {
+  class UserController {
+    + userRegistration(username: String, email: String, password: String)
+    + userLogin(username: String, password: String)
+    + userProfile(username: String)
+  }
+  class BikeController {
+    + bikeListing(bikeType: String)
+    + bikeAvailability(bikeId: int)
+    + bikeUpdate(bikeId: int, availability: String)
+  }
+  class RideController {
+    + rideRequest(userId: int, bikeId: int)
+    + rideStatus(rideId: int)
+    + rideEnd(rideId: int)
+  }
+  class DeliveryController {
+    + deliveryRequest(userId: int)
+    + deliveryStatus(deliveryId: int)
+  }
+  class PaymentController {
+    + paymentMode(userId: int)
+    + paymentStatus(paymentId: int)
+  }
+  class NotificationController {
+    + pushNotification(userId: int)
+    + emailNotification(userId: int)
+  }
+  class AdministrationController {
+    + systemSettings()
+    + systemConfigurations()
+    + systemAnalytics()
+  }
+}
+@enduml

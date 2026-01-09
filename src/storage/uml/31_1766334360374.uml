@@ -1,0 +1,157 @@
+@startuml
+participant User as user
+participant UserModule as user-module
+participant BikeModule as bike-module
+participant RideModule as ride-module
+participant PaymentModule as payment-module
+participant NotificationModule as notification-module
+participant AdministrationModule as administration-module
+
+package "Authentication" as auth_package {
+  class User {
+  - id : Integer
+  - username : String
+  - password : String
+  - email : String
+  
+  + register()
+  + login()
+  + logout()
+  + saveProfile()
+  }
+
+  class AuthenticationService {
+  - userId : Integer
+  + authenticate()
+  + verifyPassword()
+  + generateToken()
+  }
+}
+
+package "Bike" as bike_package {
+  class Bike {
+  - id : Integer
+  - name : String
+  - type : String
+  - description : String
+  
+  + addBike()
+  + editBike()
+  + removeBike()
+  + viewBike()
+  }
+
+  class BikeService {
+  - bikeId : Integer
+  + retrieveBike()
+  + saveBike()
+  + updateBike()
+  }
+}
+
+package "Ride" as ride_package {
+  class Ride {
+  - id : Integer
+  - startTime : Date
+  - endTime : Date
+  - distance : Integer
+  
+  + addRide()
+  + editRide()
+  + removeRide()
+  + viewRide()
+  }
+
+  class RideService {
+  - rideId : Integer
+  + retrieveRide()
+  + saveRide()
+  + updateRide()
+  }
+}
+
+package "Payment" as payment_package {
+  class Payment {
+  - id : Integer
+  - amount : Integer
+  - paymentMethod : String
+  - userId : Integer
+  
+  + addPayment()
+  + editPayment()
+  + removePayment()
+  + viewPayment()
+  }
+
+  class PaymentService {
+  - paymentId : Integer
+  + retrievePayment()
+  + savePayment()
+  + updatePayment()
+  }
+}
+
+package "Notification" as notification_package {
+  class Notification {
+  - id : Integer
+  - message : String
+  - userId : Integer
+  - notificationType : String
+  
+  + addNotification()
+  + editNotification()
+  + removeNotification()
+  + viewNotification()
+  }
+
+  class NotificationService {
+  - notificationId : Integer
+  + retrieveNotification()
+  + saveNotification()
+  + updateNotification()
+  }
+}
+
+package "Administration" as admin_package {
+  class Administrator {
+  - id : Integer
+  - username : String
+  - password : String
+  - email : String
+  
+  + register()
+  + login()
+  + logout()
+  + saveProfile()
+  }
+
+  class AdminService {
+  - administratorId : Integer
+  + retrieveAdmin()
+  + saveAdmin()
+  + updateAdmin()
+  }
+}
+
+package "Data Storage" as storage_package {
+  class Database {
+  + connect()
+  + disconnect()
+  + read()
+  + write()
+  }
+}
+
+user-module -> user : User registration and login
+bike-module -> user : User-friendly search engine
+ride-module -> user : Live ride tracking and navigation
+payment-module -> user : Digital payments and refunds
+notification-module -> user : Notification system
+
+admin_module -> user_module : Manage user roles
+admin_module -> bike_module : Manage bike listings
+admin_module -> ride_module : View ride history and analytics
+admin_module -> payment_module : View payment history and analytics
+admin_module -> notification_module : Manage notification settings
+
+@enduml

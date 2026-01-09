@@ -1,0 +1,160 @@
+@startuml
+Here is the PlantUML class diagram for the Smart Bike Rental App:
+```PlantUML
+@startuml
+
+package "User Module" {
+    class UserRegistry {
+        +user_id: int
+        +username: string
+        +email: string
+        +password: string
+
+        +register_user(): void
+        +login_user(): boolean
+        +update_profile(): void
+    }
+
+    class UserProfile {
+        +user_id: int
+        +username: string
+        +email: string
+
+        +get_user_profile(): void
+        +update_user_profile(): void
+        +delete_user_profile(): void
+    }
+
+    class UserHistory {
+        +user_id: int
+        +ride_history: string
+
+        +get_user_history(): void
+        +add_to_history(): void
+        +remove_from_history(): void
+    }
+
+    note "Handles user API logic" as N1 <<api>>
+    UserRegistry .. N1
+    UserProfile .. N1
+    UserHistory .. N1
+}
+
+package "Bike Module" {
+    class BikeRegistry {
+        +bike_id: int
+        +location: string
+        +status: string
+
+        +register_bike(): void
+        +unregister_bike(): void
+        +update_bike_status(): void
+    }
+
+    class BikeStatus {
+        +bike_id: int
+        +status: string
+
+        +get_bike_status(): void
+        +update_bike_status(): void
+    }
+
+    class BikeLocation {
+        +bike_id: int
+        +location: string
+
+        +get_bike_location(): void
+        +update_bike_location(): void
+    }
+
+    note "Provides information on bike availability" as N2 <<api>>
+    BikeRegistry .. N2
+    BikeStatus .. N2
+    BikeLocation .. N2
+}
+
+package "Payment Module" {
+    class PaymentGateway {
+        +user_id: int
+        +amount: int
+
+        +process_payment(): void
+        +cancel_payment(): void
+        +refund_payment(): void
+    }
+
+    class PaymentHistory {
+        +user_id: int
+        +payment_history: string
+
+        +get_payment_history(): void
+        +add_to_history(): void
+        +remove_from_history(): void
+    }
+
+    note "Facilitates payment processing and billing" as N3 <<api>>
+    PaymentGateway .. N3
+    PaymentHistory .. N3
+}
+
+package "Ride Module" {
+    class RideRecorder {
+        +ride_id: int
+        +user_id: int
+        +bike_id: int
+        +distance: int
+        +calories_burned: int
+
+        +record_ride(): void
+        +get_ride_record(): void
+        +remove_ride_record(): void
+    }
+
+    class RideHistory {
+        +user_id: int
+        +ride_history: string
+
+        +get_ride_history(): void
+        +add_to_history(): void
+        +remove_from_history(): void
+    }
+
+    note "Logs user ride history" as N4 <<api>>
+    RideRecorder .. N4
+    RideHistory .. N4
+}
+
+package "Search Module" {
+    class SearchEngine {
+        +location: string
+
+        +search_nearby_stations(): void
+        +search_bike_availability(): void
+    }
+
+    class StationListing {
+        +station_id: int
+        +name: string
+        +location: string
+
+        +get_station_listing(): void
+        +update_station_listing(): void
+    }
+
+    note "Facilitates user search for nearby bike stations" as N5 <<api>>
+    SearchEngine .. N5
+    StationListing .. N5
+}
+
+Class UserRegistry --> UserHistory
+Class UserRegistry --> UserProfile
+Class BikeRegistry --> BikeStatus
+Class BikeRegistry --> BikeLocation
+Class PaymentGateway --> PaymentHistory
+Class RideRecorder --> RideHistory
+SearchEngine --> StationListing
+
+@enduml
+```
+This PlantUML class diagram shows the layered architecture of the Smart Bike Rental App, with each package (User Module, Bike Module, Payment Module, Ride Module, and Search Module) containing its respective classes and relationships. The <<api>> notes mark the classes that are part of the API interface.
+@enduml

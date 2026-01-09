@@ -1,0 +1,149 @@
+@startuml
+participant User
+participant UserRepository
+participant UserService
+participant Bike
+participant BikeRepository
+participant BikeService
+participant Ride
+participant RideRepository
+participant RideService
+participant Payment
+participant PaymentRepository
+participant PaymentService
+participant Notification
+participant NotificationRepository
+participant NotificationService
+
+package UserModule {
+  class User {
+  - userId : int
+  - name : string
+  - email : string
+  - password : string
+  + registerUser(user : User) : boolean
+  + loginUser(email : string, password : string) : string
+  + forgotPassword(email : string) : boolean
+  + updateUser(user : User) : boolean
+  }
+
+  class UserRepository {
+  + findUserByEmail(email : string) : User
+  + saveUser(user : User) : boolean
+  }
+
+  class UserService {
+  + registerUser(user : User) : boolean
+  + loginUser(email : string, password : string) : string
+  + forgotPassword(email : string) : boolean
+  + updateUser(user : User) : boolean
+  }
+}
+
+package BikeModule {
+  class Bike {
+  - bikeId : int
+  - modelName : string
+  - category : string
+  - city : string
+  - address : string
+  + listBikes() : Bike[]
+  + getBikeDetails(bikeId : int) : Bike
+  + rentBike(bikeId : int, userId : int, startAddress : string, endAddress : string) : boolean
+  + returnBike(bikeId : int, userId : int) : boolean
+  }
+
+  class BikeRepository {
+  + findBikesByCategory(category : string) : Bike[]
+  + saveBike(bike : Bike) : boolean
+  }
+
+  class BikeService {
+  + listBikes() : Bike[]
+  + getBikeDetails(bikeId : int) : Bike
+  + rentBike(bikeId : int, userId : int, startAddress : string, endAddress : string) : boolean
+  + returnBike(bikeId : int, userId : int) : boolean
+  }
+}
+
+package RideModule {
+  class Ride {
+  - rideId : int
+  - userId : int
+  - bikeId : int
+  - startAddress : string
+  - endAddress : string
+  - startTimestamp : string
+  - endTimestamp : string
+  + rentBike(ride : Ride) : boolean
+  + endRide(ride : Ride) : boolean
+  + cancelRide(rideId : int) : boolean
+  }
+
+  class RideRepository {
+  + findRidesByUser(userId : int) : Ride[]
+  + saveRide(ride : Ride) : boolean
+  + cancelRide(rideId : int) : boolean
+  }
+
+  class RideService {
+  + rentBike(userId : int, bikeId : int, startAddress : string, endAddress : string) : boolean
+  + endRide(rideId : int) : boolean
+  + cancelRide(rideId : int) : boolean
+  }
+}
+
+package PaymentModule {
+  class Payment {
+  - paymentId : int
+  - rideId : int
+  - amount : double
+  - paymentMethod : string
+  + processPayment(payment : Payment) : boolean
+  }
+
+  class PaymentRepository {
+  + findPaymentsByRide(rideId : int) : Payment[]
+  + savePayment(payment : Payment) : boolean
+  }
+
+  class PaymentService {
+  + processPayment(rideId : int, amount : double, paymentMethod : string) : boolean
+  }
+}
+
+package NotificationModule {
+  class Notification {
+  - notificationId : int
+  - userId : int
+  - message : string
+  + sendNotification(notification : Notification) : boolean
+  }
+
+  class NotificationRepository {
+  + findNotificationsByUser(userId : int) : Notification[]
+  + saveNotification(notification : Notification) : boolean
+  }
+
+  class NotificationService {
+  + sendNotification(userId : int, message : string) : boolean
+  }
+}
+
+User --|> UserRepository
+User --|> UserService
+Bike --|> BikeRepository
+Bike --|> BikeService
+Ride --|> RideRepository
+Ride --|> RideService
+Payment --|> PaymentRepository
+Payment --|> PaymentService
+Notification --|> NotificationRepository
+Notification --|> NotificationService
+
+UserService --|> UserRepository
+BikeService --|> BikeRepository
+RideService --|> RideRepository
+PaymentService --|> PaymentRepository
+NotificationService --|> NotificationRepository
+@enduml

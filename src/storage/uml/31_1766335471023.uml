@@ -1,0 +1,164 @@
+@startuml
+interface Database {
+  +save(data)
+  +get(data)
+}
+
+interface GoogleMaps {
+  +getDirections(from, to)
+  +getETA(from, to)
+}
+
+package "User Module" {
+  class User {
+    +id : String
+    +email : String
+    +password : String
+    +name : String
+    -register(email, password, name)
+    -login(email, password)
+    -updateProfile(data)
+    -changePassword(password)
+  }
+
+  class UserManager {
+    +getUser(id)
+    +saveUser(data)
+    -authenticate(user)
+    -authorize(user, action)
+    -getUserProfile(id)
+  }
+}
+
+package "Bike Module" {
+  class Bike {
+    +id : String
+    +type : String
+    +brand : String
+    +location : String
+    -listBike()
+    -editBike(data)
+    -removeBike(id)
+    -getBikeInfo(id)
+  }
+
+  class BikeManager {
+    +getBike(id)
+    +saveBike(data)
+    -assignRider(id, riderId)
+    -getBikeHistory(id)
+    -updateBikeStatus(id)
+  }
+}
+
+package "Ride Module" {
+  class Ride {
+    +id : String
+    +user : String
+    +rider : String
+    +location : String
+    -startRide()
+    -trackRide()
+    -updateRideInfo(data)
+    -endRide()
+  }
+
+  class RideManager {
+    +getRide(id)
+    +saveRide(data)
+    -assignBike(id, bikeId)
+    -getRideHistory(id)
+    -updateRideStatus(id)
+  }
+}
+
+package "Payment Module" {
+  class Payment {
+    +id : String
+    +amount : Float
+    +status : String
+    -processPayment()
+    -capturePayment(id)
+    -refundPayment(id)
+    -getPaymentHistory()
+  }
+
+  class PaymentManager {
+    +getPayment(id)
+    +savePayment(data)
+    -authorizeTransaction(id)
+    -captureTransaction(id)
+    -refundTransaction(id)
+  }
+}
+
+package "Delivery Module" {
+  class Delivery {
+    +id : String
+    +assignmentTime : DateTime
+    +startTime : DateTime
+    +endTime : DateTime
+    -assignDelivery(assignmentTime)
+    -updateDeliveryStatus(status)
+    -getDeliveryStatus(id)
+    -getDeliveryHistory(id)
+  }
+
+  class DeliveryManager {
+    +getDelivery(id)
+    +saveDelivery(data)
+    -updateDeliveryInfo(id)
+    -getDeliveryAssignment(id)
+    -updateDeliveryAssignment(id)
+  }
+}
+
+package "Notification Module" {
+  class Notification {
+    +id : String
+    +type : String
+    +status : String
+    -sendNotification()
+    -updateNotificationStatus(status)
+    -getNotificationHistory()
+    -getNotificationSettings()
+  }
+
+  class NotificationManager {
+    +getNotification(id)
+    +saveNotification(data)
+    -authorizeNotification(id)
+    -getNotificationPreferences()
+    -updateNotificationPreferences()
+  }
+}
+
+package "Administration Module" {
+  class ADMIN {
+    +id : String
+    +role : String
+    +password : String
+    -login(username, password)
+    -saveAnalytics(data)
+    -viewAnalytics()
+    -updateSystemConfiguration(data)
+  }
+
+  class AdminManager {
+    +getAdmin(id)
+    +saveAdmin(data)
+    -updateAdminPassword(data)
+    -assignAdminRole(id)
+    -getAnalytics(data)
+  }
+}
+
+Database --|> Ride
+Database --|> User
+Database --|> Bike
+Database --|> Payment
+Database --|> Delivery
+GoogleMaps --|> Ride
+GoogleMaps --|> Delivery
+
+@enduml

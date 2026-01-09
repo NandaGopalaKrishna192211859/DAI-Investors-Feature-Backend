@@ -1,0 +1,226 @@
+@startuml
+package "Login Module" {
+    class RegisterUser {
+        - userDetails: RegisterUserDetails
+        + registerUser(userDetails: RegisterUserDetails): User
+        + registerUser(RegisterRequest): User
+    }
+    
+    class Registration {
+        - exception: RegistrationException
+    }
+    
+    class RegistrationException {
+        - code: number
+        - message: string
+    }
+    
+    class Login {
+        - username: string
+        - password: string
+    }
+    
+    class Session {
+        - userId: string
+        - expires: Date
+    }
+    
+    class LoginException {
+        - code: number
+        - message: string
+    }
+    
+    class OnlinePayment {
+        - paymentDetails: PaymentDetails
+    }
+    
+    class PaymentDetails {
+        - amount: number
+        - currency: string
+    }
+    
+    class Transaction {
+        - id: string
+        - amount: number
+        - currency: string
+    }
+    
+    class PaymentException {
+        - code: number
+        - message: string
+    }
+}
+
+package "Database Management" {
+    class DatabaseManagement {
+        - id: string
+        - type: string
+        - data: object
+    }
+    
+    class Creation {
+        - id: string
+        - type: string
+        - data: object
+    }
+    
+    class CreationException {
+        - code: number
+        - message: string
+    }
+    
+    class Update {
+        - id: string
+        - updatedData: object
+    }
+    
+    class UpdateException {
+        - code: number
+        - message: string
+    }
+    
+    class Deletion {
+        - id: string
+    }
+    
+    class DeletionException {
+        - code: number
+        - message: string
+    }
+}
+
+package "Bike Listings" {
+    class BikeListings {
+        - id: string
+        - bikeDetails: BikeDetails
+        - availability: Availability
+    }
+    
+    class BikeDetails {
+        - brand: string
+        - model: string
+        - year: number
+    }
+    
+    class Availability {
+        - status: string
+        - date: Date
+    }
+    
+    class Creation {
+        - id: string
+        - type: string
+        - data: object
+    }
+    
+    class CreationException {
+        - code: number
+        - message: string
+    }
+    
+    class Update {
+        - id: string
+        - updatedData: object
+    }
+    
+    class UpdateException {
+        - code: number
+        - message: string
+    }
+    
+    class Retrieve {
+        - id: string
+    }
+    
+    class RetrieveException {
+        - code: number
+        - message: string
+    }
+    
+    class Deletion {
+        - id: string
+    }
+    
+    class DeletionException {
+        - code: number
+        - message: string
+    }
+}
+
+package "Payment Gateway" {
+    class PaymentGateway {
+        - amount: number
+        - currency: string
+    }
+    
+    class Payment {
+        - id: string
+        - amount: number
+        - currency: string
+    }
+    
+    class PaymentException {
+        - code: number
+        - message: string
+    }
+    
+    class Refund {
+        - id: string
+    }
+    
+    class RefundException {
+        - code: number
+        - message: string
+    }
+}
+
+package "Notification System" {
+    class NotificationSystem {
+        - recipient: string
+        - message: string
+    }
+    
+    class Delivery {
+        - recipient: string
+        - message: string
+    }
+    
+    class DeliveryException {
+        - code: number
+        - message: string
+    }
+}
+
+package "Ride Tracking" {
+    class RideTracking {
+        - id: string
+        - status: string
+        - navigation: Navigation
+    }
+    
+    class Navigation {
+        - route: string
+        - distance: number
+        - duration: number
+    }
+    
+    class Update {
+        - id: string
+        - status: string
+    }
+    
+    class UpdateException {
+        - code: number
+        - message: string
+    }
+    
+    class Retrieve {
+        - id: string
+    }
+    
+    class RetrieveException {
+        - code: number
+        - message: string
+    }
+}
+@enduml

@@ -1,0 +1,144 @@
+@startuml
+Below is a PlantUML diagram that represents the **Low-Level Design (LLD) for Smart Bike Rental App**:
+
+```plantuml
+@startuml
+package UserManagement {
+    class User {
+        +id: int
+        +email: string
+        +password: string
+        +firstName: string
+        +lastName: string
+
+        +register_user(): string
+        +login_user(): boolean
+        +forgot_password(): string
+        +update_profile(): boolean
+    }
+
+    note "Handles user information and operations" as N1 <<api>>
+    User .. N1
+
+    class Payment {
+        +id: int
+        +user_id: int
+        +card_number: string
+        +expiration_date: string
+        +cvv: string
+
+        +pay_rental(): boolean
+        +update_payment_info(): boolean
+        +get_payment_info(): Payment
+        +delete_payment(): boolean
+    }
+
+    note "Handles payment information and operations" as N2 <<api>>
+    Payment .. N2
+}
+
+package BikeManagement {
+    class Bike {
+        +id: int
+        +bike_type: string
+        +price: float
+        +location: string
+
+        +list_bikes(): string
+        +get_bike(): Bike
+        +rent_bike(): Rental
+        +return_bike(): Rental
+    }
+
+    note "Handles bike listings and operations" as N3 <<api>>
+    Bike .. N3
+
+    class BikeStatus {
+        +id: int
+        +bike_id: int
+        +status: string
+
+        +update_status(): boolean
+        +get_status(): BikeStatus
+    }
+
+    note "Handles bike status information and operations" as N4 <<api>>
+    BikeStatus .. N4
+}
+
+package RentalManagement {
+    class Rental {
+        +id: int
+        +user_id: int
+        +bike_id: int
+        +start_time: string
+        +end_time: string
+
+        +request_rental(): Rental
+        +end_rental(): boolean
+        +get_rental(): Rental
+    }
+
+    note "Handles bike rental and operations" as N5 <<api>>
+    Rental .. N5
+
+    class RentalStatus {
+        +id: int
+        +rental_id: int
+        +status: string
+
+        +update_status(): boolean
+        +get_status(): RentalStatus
+    }
+
+    note "Handles rental status information and operations" as N6 <<api>>
+    RentalStatus .. N6
+}
+
+package NotificationManagement {
+    class Notification {
+        +id: int
+        +user_id: int
+        +message: string
+        +timestamp: string
+
+        +send_notification(): boolean
+        +get_notification(): Notification
+    }
+
+    note "Handles push notifications and operations" as N7 <<api>>
+    Notification .. N7
+}
+
+package SupportManagement {
+    class Support {
+        +id: int
+        +user_id: int
+        +issue: string
+
+        +report_issue(): boolean
+        +get_issue(): Support
+    }
+
+    note "Handles support requests and operations" as N8 <<api>>
+    Support .. N8
+}
+
+UserManagement --> BikeManagement
+BikeManagement --> RentalManagement
+RentalManagement --> NotificationManagement
+NotificationManagement --> SupportManagement
+
+@enduml
+```
+
+This PlantUML diagram represents the low-level design for the Smart Bike Rental App, with 5 packages:
+
+1. **UserManagement**: Handles user information and operations, including user registration, login, and payment.
+2. **BikeManagement**: Handles bike listings and operations, including bike rental and return.
+3. **RentalManagement**: Handles bike rental and operations, including rental requests and ends.
+4. **NotificationManagement**: Handles push notifications and operations, including send and get notifications.
+5. **SupportManagement**: Handles support requests and operations, including report issues.
+
+Each package contains 4 classes, and relationships are defined between packages using PlantUML's arrow notation.
+@enduml

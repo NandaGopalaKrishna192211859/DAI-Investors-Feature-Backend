@@ -1,0 +1,88 @@
+@startuml
+package UserModule {
+  class User {
+    +user_id : int
+    +email : string
+    +password : string
+    +name : string
+    +phone_number : string
+    -register(user_data)
+    -login(email, password)
+    -update_user(user_id, user_data)
+    -delete_user(user_id)
+  }
+}
+
+package BikeModule {
+  class Bike {
+    +bike_id : int
+    +bike_name : string
+    +bike_type : string
+    +location : string
+    +availability : boolean
+    -add_bike(bike_data)
+    -remove_bike(bike_id)
+    -update_bike_status(bike_id, availability)
+    -get_bikes_by_type(bike_type)
+  }
+}
+
+package RideModule {
+  class Ride {
+    +ride_id : int
+    +user_id : int
+    +bike_id : int
+    +start_location : string
+    +end_location : string
+    +status : string
+    -create_ride(ride_data)
+    -update_ride_status(ride_id, status)
+    -get_live_ride_updates(ride_id)
+  }
+}
+
+package PaymentModule {
+  class Payment {
+    +payment_id : int
+    +user_id : int
+    +amount : float
+    +payment_method : string
+    -process_payment(payment_data)
+    -get_user_balance(user_id)
+  }
+}
+
+package NotificationModule {
+  class Notification {
+    +notification_id : int
+    +user_id : int
+    +notification_type : string
+    +notification_message : string
+    -send_push_notification(user_id, notification_message)
+    -send_email_notification(user_id, notification_message)
+  }
+}
+
+package AdministrationModule {
+  package SystemSettings {
+    class SystemSetting {
+      +setting_id : int
+      +setting_name : string
+      +setting_value : string
+      -update_system_setting(setting_id, setting_value)
+      -get_system_setting(setting_name)
+    }
+  }
+  package Analytics {
+    class Analytics {
+      +analytics_id : int
+      +user_id : int
+      +ride_id : int
+      +analytics_data : string
+      -collect_analytics_data(user_id, ride_id, analytics_data)
+      -get_user_analytics(user_id)
+    }
+  }
+}
+
+@enduml

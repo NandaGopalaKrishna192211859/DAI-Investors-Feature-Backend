@@ -1,0 +1,160 @@
+@startuml
+```plantuml
+@startuml
+' Module Layer
+package AuthenticationModule {
+    class UserAuthenticator {
+        +username: string
+        +password: string
+
+        +login(username, password): boolean
+        +register(username, password): boolean
+        +resetPassword(username, newPassword): boolean
+    }
+    class N1 <<api>> "Handles user authentication logic" as N1
+    UserAuthenticator ..> N1
+
+    class SessionManager {
+        +sessionId: string
+        +username: string
+
+        +createSession(username): boolean
+        +destroySession(sessionId): boolean
+    }
+    class N2 <<api>> "Manages user session data" as N2
+    SessionManager ..> N2
+}
+
+package DashboardModule {
+    class UserProfile {
+        +username: string
+        +email: string
+        +profilePicture: string
+
+        +editProfile(profile): boolean
+        +viewProfile(): boolean
+    }
+    class N3 <<api>> "Handles user profile management" as N3
+    UserProfile ..> N3
+
+    class HabitTracker {
+        +username: string
+        +habitName: string
+
+        +trackHabit(habitName): boolean
+        +viewHabitProgress(): boolean
+    }
+    class N4 <<api>> "Manages user habit tracking data" as N4
+    HabitTracker ..> N4
+}
+
+package HabitModule {
+    class Habit {
+        +habitName: string
+        +habitType: string
+        +trackingFrequency: string
+
+        +createHabit(): boolean
+        +editHabit(): boolean
+        +deleteHabit(): boolean
+    }
+    class N5 <<api>> "Handles habit selection and tracking" as N5
+    Habit ..> N5
+
+    class HabitLog {
+        +username: string
+        +habitName: string
+        +trackingDate: date
+
+        +addLog(username, habitName, trackingDate): boolean
+        +viewLogs(username, habitName): boolean
+    }
+    class N6 <<api>> "Manages habit tracking log data" as N6
+    HabitLog ..> N6
+}
+
+package CommunityModule {
+    class CommunityFeed {
+        +username: string
+        +postText: string
+
+        +makePost(postText): boolean
+        +viewPost(postText): boolean
+    }
+    class N7 <<api>> "Handles community feed management" as N7
+    CommunityFeed ..> N7
+
+    class UserConnection {
+        +username: string
+        +connectionType: string
+
+        +connectUser(username, connectionType): boolean
+        +disconnectUser(username): boolean
+    }
+    class N8 <<api>> "Manages user connections and communication" as N8
+    UserConnection ..> N8
+}
+
+package AnalyticsModule {
+    class UserStatistics {
+        +username: string
+        +habitsCompleted: int
+        +rewardPointsEarned: int
+
+        +getStatistics(username): boolean
+        +updateStatistics(username, habitsCompleted, rewardPointsEarned): boolean
+    }
+    class N9 <<api>> "Manages user statistics and insights" as N9
+    UserStatistics ..> N9
+
+    class HabitInsights {
+        +habitName: string
+        +trackingFrequency: string
+        +successRate: float
+
+        +getInsights(habitName, trackingFrequency): boolean
+        +updateInsights(habitName, trackingFrequency, successRate): boolean
+    }
+    class N10 <<api>> "Provides habit-specific insights and recommendations" as N10
+    HabitInsights ..> N10
+}
+
+package RewardModule {
+    class Reward {
+        +rewardType: string
+        +rewardPoints: int
+
+        +createReward(rewardType, rewardPoints): boolean
+        +editReward(rewardType, rewardPoints): boolean
+        +deleteReward(): boolean
+    }
+    class N11 <<api>> "Handles reward logic and management" as N11
+    Reward ..> N11
+
+    class UserReward {
+        +username: string
+        +rewardPointsEarned: int
+
+        +earnRewardPoints(username, rewardPointsEarned): boolean
+        +viewRewardPoints(username): boolean
+    }
+    class N12 <<api>> "Manages user rewards and points" as N12
+    UserReward ..> N12
+}
+
+' Data Flow Relationships
+UserAuthenticator --> SessionManager
+SessionManager --> UserProfile
+UserProfile --> HabitTracker
+HabitTracker --> Habit
+Habit --> HabitLog
+HabitLog --> CommunityFeed
+CommunityFeed --> UserConnection
+UserConnection --> UserStatistics
+UserStatistics --> HabitInsights
+HabitInsights --> Reward
+Reward --> UserReward
+
+@enduml
+```
+@enduml

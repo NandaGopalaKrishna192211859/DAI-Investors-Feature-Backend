@@ -1,0 +1,62 @@
+@startuml
+package "Entities" {
+  package "Authentication" {
+    class User {
+      - id
+      - username
+      - email
+      - password
+      + register(username: String)
+      + login(email: String, password: String)
+      + updateProfile(username: String)
+      + deleteAccount()
+    }
+    class Database {
+      - connection
+      + connect()
+      + disconnect()
+      + createTable(tableName: String, columns: List)
+      + insertData(table: String, data: List)
+      + retrieveData(table: String, condition: String)
+      + updateData(table: String, condition: String, data: List)
+      + deleteData(table: String, condition: String)
+    }
+  }
+  package "RideShare" {
+    class Bike {
+      - id
+      - listing
+      - status
+      + registerBike(listing: String)
+      + updateBikeStatus(id: Int, status: String)
+      + checkAvailability(id: Int)
+      + deleteBike(id: Int)
+    }
+    class Payment {
+      - id
+      - amount
+      - method
+      + initiatePayment(amount: Float)
+      + processPayment(id: Int, amount: Float, method: String)
+      + cancelPayment(id: Int)
+    }
+    class Notification {
+      - id
+      - type
+      - message
+      + sendNotification(type: String, message: String)
+      + scheduleNotification(type: String, message: String, time: Date)
+    }
+    class Ride {
+      - id
+      - status
+      - location
+      + updateRideStatus(id: Int, status: String)
+      + getRideLocation(id: Int)
+      + navigateToLocation(id: Int)
+      + cancelRide(id: Int)
+    }
+  }
+}
+
+@enduml
