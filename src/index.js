@@ -18,7 +18,9 @@ app.use("/api/auth", authRoutes);
 app.use("/api/projects", projectRoutes);
 app.use("/api/investors", investorRoutes);
 
-
+app.get("/",(req,res)  => {
+  res.send("Idea2LLD API running...");
+});
 
 
 const __dirname = path.resolve();
