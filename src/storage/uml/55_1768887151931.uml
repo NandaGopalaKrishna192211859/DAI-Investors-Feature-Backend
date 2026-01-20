@@ -1,0 +1,192 @@
+@startuml
+```plantuml
+@startuml
+skinparam monochrome true
+
+package "User Interaction" {
+    class UserDashboard {
+        +userId: int
+        +loggedIn: boolean
+        +userEmail: string
+
+        +loginUser(): boolean
+        +logoutUser(): void
+        +openTaskList(): void
+        +viewTeamActivity(): void
+    }
+}
+
+package "Server-side Logic" {
+    class TaskManager {
+        +taskId: int
+        +taskDeadline: string
+        +taskAssignedTo: string
+
+        +createTask(): int
+        +editTask(): void
+        +deleteTask(): void
+        +assignTask(): void
+    }
+    class UserAuthentication {
+        +username: string
+        +password: string
+
+        +loginUser(): boolean
+        +validateUser(): boolean
+        +authenticate(): boolean
+        +updateUser(): void
+    }
+    class GoalTracker {
+        +goalId: int
+        +goalDescription: string
+        +goalAssignedTo: string
+
+        +createGoal(): int
+        +editGoal(): void
+        +deleteGoal(): void
+        +assignGoal(): void
+    }
+}
+
+package "Database" {
+    class UsersTable {
+        +userId: int
+        +username: string
+        +email: string
+        +password: string
+
+        +createUser(): void
+        +updateUser(): void
+        +deleteUser(): void
+        +retrieveUser(): UsersTable
+    }
+    class TasksTable {
+        +taskId: int
+        +taskDescription: string
+        +taskDeadline: string
+        +taskAssignedTo: string
+
+        +createTask(): void
+        +updateTask(): void
+        +deleteTask(): void
+        +retrieveTask(): TasksTable
+    }
+    class DeadlinesTable {
+        +deadlineId: int
+        +deadlineDate: string
+        +taskId: int
+
+        +createDeadline(): void
+        +updateDeadline(): void
+        +deleteDeadline(): void
+        +retrieveDeadline(): DeadlinesTable
+    }
+    class GoalsTable {
+        +goalId: int
+        +goalDescription: string
+        +goalAssignedTo: string
+
+        +createGoal(): void
+        +updateGoal(): void
+        +deleteGoal(): void
+        +retrieveGoal(): GoalsTable
+    }
+    class MessagesTable {
+        +messageId: int
+        +messageContent: string
+        +timestamp: string
+
+        +createMessage(): void
+        +updateMessage(): void
+        +deleteMessage(): void
+        +retrieveMessage(): MessagesTable
+    }
+    class CalendarEventsTable {
+        +eventId: int
+        +eventDate: string
+        +taskId: int
+
+        +createEvent(): void
+        +updateEvent(): void
+        +deleteEvent(): void
+        +retrieveEvent(): CalendarEventsTable
+    }
+}
+
+package "APIs" {
+    class UserAPI {
+        +username: string
+        +password: string
+
+        +loginUser(): boolean
+        +validateUser(): boolean
+        +authenticate(): boolean
+        +updateUser(): void
+    }
+    class TaskAPI {
+        +taskId: int
+        +taskDescription: string
+        +taskDeadline: string
+        +taskAssignedTo: string
+
+        +createTask(): int
+        +editTask(): void
+        +deleteTask(): void
+        +assignTask(): void
+    }
+    class DeadlineAPI {
+        +deadlineId: int
+        +deadlineDate: string
+        +taskId: int
+
+        +createDeadline(): void
+        +updateDeadline(): void
+        +deleteDeadline(): void
+        +retrieveDeadline(): DeadlineAPI
+    }
+    class GoalAPI {
+        +goalId: int
+        +goalDescription: string
+        +goalAssignedTo: string
+
+        +createGoal(): int
+        +editGoal(): void
+        +deleteGoal(): void
+        +assignGoal(): void
+    }
+    class MessageAPI {
+        +messageId: int
+        +messageContent: string
+        +timestamp: string
+
+        +createMessage(): void
+        +updateMessage(): void
+        +deleteMessage(): void
+        +retrieveMessage(): MessageAPI
+    }
+    class CalendarAPI {
+        +eventId: int
+        +eventDate: string
+        +taskId: int
+
+        +createEvent(): void
+        +updateEvent(): void
+        +deleteEvent(): void
+        +retrieveEvent(): CalendarAPI
+    }
+}
+
+note "Handles user API logic" as N1 <<api>>
+UserAPI .. N1
+
+UserInteraction -- > UserDashboard
+UserDashboard --> ServerSideLogic
+ServerSideLogic --> Database
+Database --> APIs
+APIs --> Database
+
+@enduml
+```
+
+Please note that this diagram has been created following the PlantUML syntax and all the specified rules, including the ones mentioned in your notes.
+@enduml

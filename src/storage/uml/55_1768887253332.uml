@@ -1,0 +1,252 @@
+@startuml
+```plantuml
+@startuml
+
+package UserManagement {
+    package UserServices {
+        class UserService {
+            +username: string
+            +email: string
+            +password: string
+            +role: string
+
+            +loginUser(): boolean
+            +createUser(): void
+            +getUserInfo(): string
+            +updateUserPermission(): boolean
+        }
+        class UserAuthenticator {
+            +token: string
+            +user_id: int
+
+            +generateToken(): string
+            +validateToken(): boolean
+            +verifyCredentials(): boolean
+        }
+    }
+
+    package UserModels {
+        class User {
+            +id: int
+            +username: string
+            +email: string
+            +password: string
+            +role: string
+
+            +saveUser(): void
+            +getUser(): User
+            +updateUser(): void
+            +deleteUser(): void
+        }
+    }
+}
+
+package CoreServices {
+    package TaskServices {
+        class TaskService {
+            +taskId: int
+            +title: string
+            +description: string
+            +dueDate: float
+            +assigneeId: int
+
+            +createTask(): void
+            +getTask(): Task
+            +updateTask(): void
+            +deleteTask(): void
+        }
+        class TaskValidator {
+            +task_id: int
+            +task_title: string
+            +task_description: string
+            +task_due_date: float
+            +task_assignee_id: int
+
+            +validateTask(): boolean
+            +validateTaskTitle(): boolean
+            +validateTaskDescription(): boolean
+            +validateTaskDueDate(): boolean
+            +validateTaskAssigneeId(): boolean
+        }
+    }
+
+    package SummaryServices {
+        class SummaryService {
+            +progressId: int
+            +progress: float
+            +taskId: int
+
+            +createSummary(): void
+            +getSummary(): Summary
+            +updateSummary(): void
+            +deleteSummary(): void
+        }
+        class SummaryValidator {
+            +summary_id: int
+            +summary_progress: float
+            +summary_task_id: int
+
+            +validateSummary(): boolean
+            +validateSummaryProgress(): boolean
+            +validateSummaryTaskId(): boolean
+        }
+    }
+}
+
+package DataLayer {
+    package DatabaseModels {
+        class UserTable {
+            +id: int
+            +username: string
+            +email: string
+            +password: string
+            +role: string
+
+            +saveUser(): void
+            +getUser(): User
+            +updateUser(): void
+            +deleteUser(): void
+        }
+        class TaskTable {
+            +id: int
+            +title: string
+            +description: string
+            +dueDate: float
+            +assigneeId: int
+
+            +saveTask(): void
+            +getTask(): Task
+            +updateTask(): void
+            +deleteTask(): void
+        }
+        class SummaryTable {
+            +id: int
+            +progress: float
+            +taskId: int
+
+            +saveSummary(): void
+            +getSummary(): Summary
+            +updateSummary(): void
+            +deleteSummary(): void
+        }
+    }
+}
+
+package CommunicationLayer {
+    package WebApis {
+        class UserController {
+            +userId: int
+            +username: string
+            +email: string
+            +password: string
+            +role: string
+
+            +login(): boolean
+            +createUser(): void
+            +getUserInfo(): string
+            +updateUserProfile(): boolean
+        }
+        class TaskController {
+            +taskId: int
+            +title: string
+            +description: string
+            +dueDate: float
+            +assigneeId: int
+
+            +createTask(): void
+            +getTask(): Task
+            +updateTask(): void
+            +deleteTask(): void
+        }
+        class SummaryController {
+            +summary_id: int
+            +progress: float
+            +taskId: int
+
+            +createSummary(): void
+            +getSummary(): Summary
+            +updateSummary(): void
+            +deleteSummary(): void
+        }
+    }
+}
+
+package BillingModule {
+    package PaymentServices {
+        class PaymentService {
+            +paymentMethod: string
+            +paymentAmount: float
+            +paymentDate: float
+
+            +processPayment(): boolean
+            +cancelPayment(): boolean
+        }
+    }
+
+    package SubscriptionModels {
+        class Subscription {
+            +id: int
+            +paymentMethod: string
+            +paymentAmount: float
+            +paymentDate: float
+        }
+    }
+}
+
+package ReportsGenerator {
+    package ReportServices {
+        class ReportService {
+            +reportType: string
+            +reportDate: float
+            +reportData: string
+
+            +generateReport(): void
+            +sendReport(): void
+        }
+    }
+}
+
+package SettingModule {
+    package SettingsServices {
+        class SettingsService {
+            +settingId: int
+            +settingValue: string
+            +settingDescription: string
+
+            +createSetting(): void
+            +getSetting(): string
+            +updateSetting(): void
+            +deleteSetting(): void
+        }
+    }
+
+    package SettingModels {
+        class Setting {
+            +id: int
+            +value: string
+            +description: string
+            +date: float
+
+            +saveSetting(): void
+            +getSetting(): Setting
+            +updateSetting(): void
+            +deleteSetting(): void
+        }
+    }
+}
+
+note "Handles user API logic" as N1 <<api>>
+UserService .. N1
+
+note "Handles task API logic" as N2 <<api>>
+TaskService .. N2
+
+note "Handles summary API logic" as N3 <<api>>
+SummaryService .. N3
+
+UserController --> TaskController
+TaskController ..> SummaryController
+
+@enduml
+```
+@enduml

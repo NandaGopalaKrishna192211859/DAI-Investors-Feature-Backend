@@ -1,0 +1,176 @@
+@startuml
+Here is the final PlantUML class diagram for the **Team Planning App LLD**:
+
+```plantuml
+@startuml
+package UserManagement {
+    class AuthenticationModule {
+        +username: string
+        +password: string
+        +role: string
+        +userId: int
+
+        +login(username, password): boolean
+        +register(username, password, role): boolean
+        +getUserInfo(): string
+        +updateUser(userId, newData): void
+    }
+}
+note "Handles user API logic" as N1 <<api>>
+AuthenticationModule ..> N1
+
+package CoreServices {
+    class UserManager {
+        +users: array
+        +newUser: User
+
+        +createUser(newUser): void
+        +getUser(id): User
+        +updateUser(id, newData): void
+        +deleteUser(id): void
+    }
+}
+AuthenticationModule --> UserManager
+
+package DataLayer {
+    class UsersDB {
+        +connection: array
+        +data: string
+
+        +createUser(newUser): void
+        +getUser(id): User
+        +updateUser(id, newData): void
+        +deleteUser(id): void
+    }
+}
+UserManager --> UsersDB
+
+package TaskManagement {
+    class TaskManager {
+        +tasks: array
+        +newTask: Task
+
+        +createTask(newTask): void
+        +getTask(id): Task
+        +updateTask(id, newData): void
+        +deleteTask(id): void
+    }
+}
+AuthenticationModule --> TaskManager
+
+package DataLayer {
+    class TasksDB {
+        +connection: array
+        +data: string
+
+        +createTask(newTask): void
+        +getTask(id): Task
+        +updateTask(id, newData): void
+        +deleteTask(id): void
+    }
+}
+TaskManager --> TasksDB
+
+package TaskManagement {
+    class CalendarManager {
+        +calendar: array
+        +newEvent: Event
+
+        +createEvent(newEvent): void
+        +getEvent(id): Event
+        +updateEvent(id, newData): void
+        +deleteEvent(id): void
+    }
+}
+TaskManager --> CalendarManager
+
+package DataLayer {
+    class EventsDB {
+        +connection: array
+        +data: string
+
+        +createEvent(newEvent): void
+        +getEvent(id): Event
+        +updateEvent(id, newData): void
+        +deleteEvent(id): void
+    }
+}
+CalendarManager --> EventsDB
+
+package NotificationModule {
+    class NotificationManager {
+        +notifications: array
+        +newNotification: Notification
+
+        +createNotification(newNotification): void
+        +getNotification(id): Notification
+        +updateNotification(id, newData): void
+        +deleteNotification(id): void
+    }
+}
+AuthenticationModule --> NotificationManager
+
+package DataLayer {
+    class NotificationsDB {
+        +connection: array
+        +data: string
+
+        +createNotification(newNotification): void
+        +getNotification(id): Notification
+        +updateNotification(id, newData): void
+        +deleteNotification(id): void
+    }
+}
+NotificationManager --> NotificationsDB
+
+package SummaryModule {
+    class SummaryManager {
+        +summary: array
+        +newSummary: Summary
+
+        +createSummary(newSummary): void
+        +getSummary(id): Summary
+        +updateSummary(id, newData): void
+        +deleteSummary(id): void
+    }
+}
+AuthenticationModule --> SummaryManager
+
+package DataLayer {
+    class SummariesDB {
+        +connection: array
+        +data: string
+
+        +createSummary(newSummary): void
+        +getSummary(id): Summary
+        +updateSummary(id, newData): void
+        +deleteSummary(id): void
+    }
+}
+SummaryManager --> SummariesDB
+
+package CommunicationLayer {
+    class APIModule {
+        +apiRequests: array
+        +newRequest: APIRequest
+
+        +handleRequest(newRequest): void
+        +handleResponse(response): void
+        +createAPIRequest(newRequest): void
+        +deleteAPIRequest(id): void
+    }
+}
+APIModule ..> N2 <<api>>
+APIModule ..> N3 <<api>>
+APIModule --> TaskManager
+APIModule --> UserManager
+
+@enduml
+```
+
+This PlantUML diagram represents the **Team Planning App LLD**, structured into 7 packages representing 7 modules of the application. Each module has its own classes containing attributes and operations, and classes in lower-level packages rely on classes in higher-level packages. The relationships are represented using standard PlantUML relationship types (--> and ..>) to indicate dependencies.
+
+The diagram includes 5 notes with the stereotype <<api>> to highlight the API-related logic and to attach API notes to API-related classes. The overall structure and names follow the **Team Planning App LLD** and the rules provided.
+
+To keep the diagram simple and follow the rules, no interfaces, enums, abstract classes, or other advanced features have been used, and only the standard PlantUML syntax has been employed.
+@enduml
